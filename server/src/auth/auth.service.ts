@@ -20,10 +20,10 @@ export class AuthService {
       },
     });
     if (!candidate) {
-      throw new UnauthorizedException('Неверный логин или пароль');
+      throw new ForbiddenException('Неверный логин или пароль');
     }
     const compare = await bcrypt.compare(dto.password, candidate.hash);
-    if (!compare) throw new UnauthorizedException('Неверный логин или пароль');
+    if (!compare) throw new ForbiddenException('Неверный логин или пароль');
     const tokens = await this.getTokens(candidate.id, candidate.login);
     await this.updateHashRtInDB(candidate.login, tokens.refresh_token);
     return tokens;
