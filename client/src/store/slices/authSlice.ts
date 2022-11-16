@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type TUser = {
+export type TUser = {
   name: string;
   login: string;
-  role: string;
+  role: "teacher" | "student";
+  tasks?: { name: string; createdAt: string; hash: string }[];
 };
 
 interface AuthState {
@@ -25,11 +26,17 @@ const AuthSlice = createSlice({
       localStorage.setItem("accessToken", action.payload);
     },
 
+    logOut(state) {
+      state.accessToken = null;
+      state.user = null;
+      localStorage.removeItem("accessToken");
+    },
+
     setUserInfo(state, action: PayloadAction<TUser>) {
       state.user = action.payload;
     },
   },
 });
 
-export const { setAccessToken, setUserInfo } = AuthSlice.actions;
+export const { setAccessToken, setUserInfo, logOut } = AuthSlice.actions;
 export default AuthSlice.reducer;

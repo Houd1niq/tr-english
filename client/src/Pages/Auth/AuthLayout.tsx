@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Header from "../../components/Header";
 import { Outlet, useNavigate } from "react-router-dom";
 
 const AuthLayout: React.FC = () => {
@@ -16,8 +15,14 @@ const AuthLayout: React.FC = () => {
 
   return (
     <>
-      <Header></Header>
-      <Outlet></Outlet>
+      <header className="h-12 mb-3">
+        <div className="text-[20px] text-main-white h-12 animate-loginLoad font-bold justify-center fixed bg-cart-bg-dark w-full inline-flex items-center">
+          TR-English
+        </div>
+      </header>
+      <div className="container mx-auto flex justify-center items-center flex-grow">
+        <Outlet></Outlet>
+      </div>
     </>
   );
 };

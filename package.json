@@ -1,0 +1,24 @@
+{
+  "name": "tr-english",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "cd server && npm run start:dev",
+    "docker": "cd server && docker-compose up",
+    "prisma": "cd server && npx prisma studio",
+    "start:backend": "concurrently \"npm run server\" \"npm run prisma\" \"npm run docker\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Houd1niq/tr-english.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Houd1niq/tr-english/issues"
+  },
+  "homepage": "https://github.com/Houd1niq/tr-english#readme"
+}

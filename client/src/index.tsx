@@ -12,7 +12,6 @@ if (rootElem) {
   const root = ReactDOM.createRoot(rootElem);
   root.render(
     <Provider store={store}>
-      {" "}
       <App />
     </Provider>
   );

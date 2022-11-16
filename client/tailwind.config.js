@@ -11,8 +11,12 @@ module.exports = {
         "main-white": "#FAFAFA",
         "bg-input": "#39393F",
       },
+
       fontFamily: {
         comfortaa: ["Comfortaa", "Nunito", "ui-sans-serif"],
+      },
+      boxShadow: {
+        roundShadow: "0 0 7px",
       },
       keyframes: {
         loginLoad: {
@@ -32,6 +36,7 @@ module.exports = {
         },
       },
       animation: {
+        headerHover: "headerHover .5s ease-in-out",
         loginLoad: "loginLoad 2s ease-in-out",
       },
     },

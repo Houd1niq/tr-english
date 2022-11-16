@@ -3,6 +3,6 @@ export interface registerResponse {
     accessToken: string;
   };
 }
-export function isRegisterSuccess(obj: any): obj is registerResponse {
+export function isAuthSuccess(obj: any): obj is registerResponse {
   return obj.data !== undefined;
 }

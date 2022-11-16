@@ -8,7 +8,7 @@ const FormInput: React.FC<{
   value: string;
 }> = ({ label, type, placeholder, getValue, value }) => {
   return (
-    <div className="flex py-3 items-center min-w-[290px] justify-between">
+    <div className="flex py-3 items-center min-w-[290px] justify-between max-w-[320px]">
       <label htmlFor={label} className="text-main-white mr-3">
         {label}
       </label>
