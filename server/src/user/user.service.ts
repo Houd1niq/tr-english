@@ -17,7 +17,7 @@ export class UserService {
         },
       });
       const tasks = teacher.tasks.map((item) => {
-        return { name: item.name, createdAt: item.createdAt };
+        return { name: item.name, createdAt: item.createdAt, hash: item.hash };
       });
       return {
         name: teacher.name,
@@ -38,6 +38,14 @@ export class UserService {
         role: student.role,
       };
     }
+  }
+
+  async getTask(hash: string) {
+    return await this.prisma.task.findUnique({
+      where: {
+        hash,
+      },
+    });
   }
 
   async createTask(id: number, dto: TaskDto) {

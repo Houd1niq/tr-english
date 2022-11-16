@@ -8,6 +8,7 @@ import StartPage from "./Pages/StartPage";
 import RequireAuthorization from "./Pages/Auth/RequireAuthorization";
 import CreateTaskPage from "./Pages/CreateTaskPage";
 import { RequireRole } from "./Pages/Auth/RequireRole";
+import { TaskInfoPage } from "./Pages/TaskInfoPage";
 
 function App() {
   return (
@@ -33,6 +34,10 @@ function App() {
               <Route
                 path="profile/create-task"
                 element={<CreateTaskPage></CreateTaskPage>}
+              ></Route>
+              <Route
+                path="task-info/:urlHash"
+                element={<TaskInfoPage></TaskInfoPage>}
               ></Route>
             </Route>
           </Route>

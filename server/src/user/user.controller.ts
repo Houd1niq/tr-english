@@ -1,4 +1,12 @@
-import { Body, Controller, Get, UseGuards, Req, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  UseGuards,
+  Req,
+  Post,
+  Param,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
@@ -20,5 +28,10 @@ export class UserController {
   async createTask(@Req() req: Request, @Body() task: TaskDto) {
     const user = req.user as PayloadType;
     return await this.userService.createTask(user.id, task);
+  }
+
+  @Get('task-info/:hash')
+  async getTaskInfo(@Param('hash') taskUrlHash: string) {
+    return await this.userService.getTask(taskUrlHash);
   }
 }

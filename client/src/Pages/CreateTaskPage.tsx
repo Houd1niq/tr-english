@@ -29,6 +29,13 @@ const CreateTaskPage: React.FC = () => {
       alert("Введите название задания");
       return;
     }
+    const isValid = values.every((item) => {
+      return item.eng.length > 0 && item.rus.length > 0;
+    });
+    if (!isValid) {
+      alert("Не все карточки заполнены");
+      return;
+    }
     createTaskQuery({ value: values, name: taskName, hash });
   }
 

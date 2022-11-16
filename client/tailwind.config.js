@@ -15,12 +15,10 @@ module.exports = {
       fontFamily: {
         comfortaa: ["Comfortaa", "Nunito", "ui-sans-serif"],
       },
+      boxShadow: {
+        roundShadow: "0 0 7px",
+      },
       keyframes: {
-        headerHover: {
-          "0%": {
-            before: true,
-          },
-        },
         loginLoad: {
           "0%": {
             height: "100vh",

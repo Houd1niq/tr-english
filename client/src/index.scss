@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.container {
+  @apply max-w-[95%] sm:max-w-[620px] md:max-w-[740px] lg:max-w-[1000px] xl:max-w-[1180px];
+}
+
 @font-face {
   font-family: Comfortaa;
   font-weight: 400;

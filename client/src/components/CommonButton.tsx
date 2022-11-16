@@ -11,7 +11,7 @@ export const CommonButton: React.FC<{
     <button
       onClick={onClickFn}
       type={type}
-      className="text-main-white bg-main-purple w-auto px-3 h-10 rounded-xl mt-2"
+      className="hover:shadow-main-purple hover:shadow-roundShadow transition-shadow text-main-white bg-main-purple w-auto px-3 h-10 rounded-xl mt-2"
     >
       {value}
     </button>

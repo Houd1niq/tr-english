@@ -8,7 +8,7 @@ const RequireAuthorization: React.FC = () => {
   if (token) {
     return (
       <>
-        <div className="container mx-auto w-[1180px]">
+        <div className="container mx-auto ">
           <Header></Header>
           <Outlet></Outlet>
         </div>

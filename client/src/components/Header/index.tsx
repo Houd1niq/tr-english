@@ -11,7 +11,7 @@ const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   return (
     <div className="header mt-3">
-      <ul className="flex gap-4">
+      <ul className="flex justify-end gap-4">
         <HeaderItem
           value="Профиль"
           onClick={() => {

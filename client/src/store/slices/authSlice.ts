@@ -4,7 +4,7 @@ export type TUser = {
   name: string;
   login: string;
   role: "teacher" | "student";
-  tasks: { name: string; createdAt: string }[];
+  tasks?: { name: string; createdAt: string; hash: string }[];
 };
 
 interface AuthState {
