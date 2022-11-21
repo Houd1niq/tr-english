@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const [logout] = authApiSlice.useLogoutMutation();
   const dispatch = useAppDispatch();
   return (
-    <div className="header mt-3">
+    <div className="header mt-3  ">
       <ul className="flex justify-end gap-4">
         <HeaderItem
           value="Профиль"

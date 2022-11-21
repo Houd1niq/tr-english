@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TaskDto } from './dto';
 import { use } from 'passport';
@@ -41,11 +45,13 @@ export class UserService {
   }
 
   async getTask(hash: string) {
-    return await this.prisma.task.findUnique({
+    const task = await this.prisma.task.findUnique({
       where: {
         hash,
       },
     });
+    if (!task) throw new BadRequestException('Такого задания не существует');
+    return task;
   }
 
   async createTask(id: number, dto: TaskDto) {

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import WordsInput from "./WordsInput";
 import { CardValue } from "../Pages/CreateTaskPage";
 
-export const WordCard: React.FC<{
+export const TeacherWordCard: React.FC<{
   idx: number;
   setArray: React.Dispatch<React.SetStateAction<CardValue[]>>;
 }> = ({ idx, setArray }) => {

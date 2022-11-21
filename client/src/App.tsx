@@ -9,6 +9,8 @@ import RequireAuthorization from "./Pages/Auth/RequireAuthorization";
 import CreateTaskPage from "./Pages/CreateTaskPage";
 import { RequireRole } from "./Pages/Auth/RequireRole";
 import { TaskInfoPage } from "./Pages/TaskInfoPage";
+import { TaskPage } from "./Pages/TaskPage/TaskPage";
+import { CardsLayout } from "./Pages/TaskPage/CardsLayout";
 
 function App() {
   return (
@@ -39,6 +41,18 @@ function App() {
                 path="task-info/:urlHash"
                 element={<TaskInfoPage></TaskInfoPage>}
               ></Route>
+            </Route>
+
+            {/*Требующие роль ученика*/}
+            <Route element={<RequireRole role="student"></RequireRole>}>
+              <Route path="task/:urlHash" element={<TaskPage></TaskPage>}>
+                <Route
+                  path="cards"
+                  element={<CardsLayout></CardsLayout>}
+                ></Route>
+                <Route path="test" element={<div>Test</div>}></Route>
+                <Route path="learning" element={<div>Learning</div>}></Route>
+              </Route>
             </Route>
           </Route>
 
