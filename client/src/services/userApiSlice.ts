@@ -10,7 +10,7 @@ export const userApiSlice = ApiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-    getOneTask: build.query<TaskDto | { createdAt: Date }, string>({
+    getOneTask: build.query<TaskDto & { createdAt: string }, string>({
       query: (hashUrl) => ({
         url: `user/task-info/${hashUrl}`,
         method: "GET",

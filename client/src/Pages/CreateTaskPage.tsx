@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import WordsInput from "../components/WordsInput";
-import { WordCard } from "../components/WordCard";
+import { TeacherWordCard } from "../components/TeacherWordCard";
 import { userApiSlice } from "../services/userApiSlice";
 import { nanoid } from "nanoid";
 export type CardValue = {
@@ -54,11 +54,11 @@ const CreateTaskPage: React.FC = () => {
       <div className="mt-6">
         {arrayOfWord.map((item, idx) => {
           return (
-            <WordCard
+            <TeacherWordCard
               key={item.id}
               setArray={setArrayOfWord}
               idx={idx}
-            ></WordCard>
+            ></TeacherWordCard>
           );
         })}
       </div>

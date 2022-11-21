@@ -37,3 +37,36 @@
 body {
   font-family: "Comfortaa", Nunito, "sans-serif";
 }
+
+.card-container {
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 2000px;
+  transition: 0.5s;
+}
+
+.card-rus.flip-rus {
+  transform: rotateX(-180deg);
+}
+
+.card-eng.flip-eng {
+  transform: rotateX(0deg);
+}
+
+.card-rus {
+  //position: absolute;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  transform: rotateX(0deg);
+  transition: 0.5s;
+}
+
+.card-eng {
+  position: absolute;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  transform: rotateX(180deg);
+  transition: 0.5s;
+}

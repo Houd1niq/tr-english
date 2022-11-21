@@ -1,7 +1,9 @@
-import React from "react";
-import { useAppSelector } from "../../store/store";
+import React, { useLayoutEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Navigate, Outlet } from "react-router-dom";
 import Header from "../../components/Header/";
+import { setUserInfo } from "../../store/slices/authSlice";
+import { userApiSlice } from "../../services/userApiSlice";
 
 const RequireAuthorization: React.FC = () => {
   const token = useAppSelector((state) => state.authReducer.accessToken);

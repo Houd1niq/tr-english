@@ -1,10 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CardValue } from "../../Pages/CreateTaskPage";
+
+type CurrentTaskType = {
+  name: string;
+  value: CardValue[];
+  cardsComplete: boolean;
+  learningComplete: boolean;
+  testComplete: boolean;
+};
 
 export type TUser = {
   name: string;
   login: string;
   role: "teacher" | "student";
   tasks?: { name: string; createdAt: string; hash: string }[];
+  currentTask?: CurrentTaskType;
 };
 
 interface AuthState {
@@ -26,6 +36,29 @@ const AuthSlice = createSlice({
       localStorage.setItem("accessToken", action.payload);
     },
 
+    setCurrentTask(
+      state,
+      action: PayloadAction<{ name: string; value: CardValue[] }>
+    ) {
+      if (state.user) {
+        state.user.currentTask = {
+          name: "",
+          value: [],
+          cardsComplete: false,
+          testComplete: false,
+          learningComplete: false,
+        };
+        state.user.currentTask.value = action.payload.value;
+        state.user.currentTask.name = action.payload.name;
+      }
+    },
+
+    setCardsComplete(state, action: PayloadAction<boolean>) {
+      if (state.user && state.user.currentTask) {
+        state.user.currentTask.cardsComplete = action.payload;
+      }
+    },
+
     logOut(state) {
       state.accessToken = null;
       state.user = null;
@@ -38,5 +71,11 @@ const AuthSlice = createSlice({
   },
 });
 
-export const { setAccessToken, setUserInfo, logOut } = AuthSlice.actions;
+export const {
+  setAccessToken,
+  setUserInfo,
+  logOut,
+  setCurrentTask,
+  setCardsComplete,
+} = AuthSlice.actions;
 export default AuthSlice.reducer;
