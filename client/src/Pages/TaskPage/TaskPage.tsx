@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import { userApiSlice } from "../../services/userApiSlice";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Roller } from "react-spinners-css";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setCurrentTask, setUserInfo } from "../../store/slices/authSlice";
+import { useAppDispatch } from "../../store/store";
+import {
+  setCardsComplete,
+  setCurrentTask,
+  setLearningComplete,
+} from "../../store/slices/authSlice";
 import { TaskSelectorItem } from "../../components/TaskSelectorItem";
-import { useWhyDidYouUpdate } from "ahooks/es";
 
 export const TaskPage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,14 +18,33 @@ export const TaskPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [getOneTaskQuery, taskQueryResult] =
     userApiSlice.useLazyGetOneTaskQuery();
-
+  const [addStudentTask, studentTaskResponse] =
+    userApiSlice.useAddStudentTaskMutation();
   useEffect(() => {
     getOneTaskQuery(hashUrl);
   }, []);
 
   useEffect(() => {
+    if (studentTaskResponse.status === "fulfilled") {
+      const data = studentTaskResponse.data;
+      console.log(data);
+      dispatch(setCardsComplete(data.cardsComplete));
+      dispatch(
+        setLearningComplete({
+          complete: data.learningComplete,
+          correctNumber: data.learnCorrectNumber,
+        })
+      );
+    }
+  }, [studentTaskResponse.status]);
+
+  useEffect(() => {
     if (taskQueryResult.isSuccess && taskQueryResult.currentData) {
-      dispatch(setCurrentTask(taskQueryResult.currentData));
+      const data = taskQueryResult.currentData;
+      dispatch(
+        setCurrentTask({ hash: data.hash, name: data.name, value: data.value })
+      );
+      addStudentTask({ name: data.name, hash: data.hash });
     }
     if (
       pathname[pathname.length - 1] !== "cards" &&
@@ -31,7 +53,7 @@ export const TaskPage: React.FC = () => {
     ) {
       navigate("cards");
     }
-  }, [taskQueryResult]);
+  }, [taskQueryResult.currentData]);
 
   if (taskQueryResult.isSuccess && taskQueryResult.currentData) {
     return (

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LoginRoleSelector from "../../components/LoginRoleSelector";
 import FormInput from "../../components/FormInput";
-import { ApiSlice } from "../../services/ApiSlice";
 import { isAuthSuccess } from "../../types";
 import { useAppDispatch } from "../../store/store";
 import { setAccessToken } from "../../store/slices/authSlice";
@@ -12,7 +10,7 @@ import { CommonButton } from "../../components/CommonButton";
 const LoginPage: React.FC = () => {
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [authorize, {}] = authApiSlice.useLoginMutation();
+  const [authorize] = authApiSlice.useLoginMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   return (
@@ -44,7 +42,7 @@ const LoginPage: React.FC = () => {
       ></FormInput>
       <CommonButton value="Войти" type="submit"></CommonButton>
       <Link to="../register" className="text-main-purple text-[12px] mt-2">
-        Ещё не зарегестрированы? <br /> Зарегестрироваться
+        Ещё не зарегистрированы? <br /> Зарегистрироваться
       </Link>
     </form>
   );

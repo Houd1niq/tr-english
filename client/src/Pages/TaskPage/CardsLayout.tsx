@@ -1,17 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { StudentWordCard } from "../../components/StudentWordCard";
 import { CommonButton } from "../../components/CommonButton";
 import { setCardsComplete } from "../../store/slices/authSlice";
+import { userApiSlice } from "../../services/userApiSlice";
 
 export const CardsLayout: React.FC = () => {
   const task = useAppSelector((state) => state.authReducer.user!.currentTask);
   const [cardIdx, setCardIdx] = useState(0);
   const dispatch = useAppDispatch();
+  const [updateStudentTaskQuery] = userApiSlice.useUpdateStudentTaskMutation();
 
   useEffect(() => {
     if (task && cardIdx === task.value.length && !task.cardsComplete) {
       dispatch(setCardsComplete(true));
+      updateStudentTaskQuery({ hash: task.hash, cardsComplete: true });
     }
   }, [task, cardIdx]);
 
@@ -43,6 +46,7 @@ export const CardsLayout: React.FC = () => {
           onClick={() => {
             setCardIdx(0);
             dispatch(setCardsComplete(false));
+            updateStudentTaskQuery({ hash: task.hash, cardsComplete: false });
           }}
           value="Повторить карточки заново"
         ></CommonButton>

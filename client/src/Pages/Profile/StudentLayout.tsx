@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { TUser } from "../../store/slices/authSlice";
-import WordsInput from "../../components/WordsInput";
 import { CommonButton } from "../../components/CommonButton";
-import FormInput from "../../components/FormInput";
 import { useNavigate } from "react-router-dom";
+import { TaskList } from "./TaskList";
+import { userApiSlice } from "../../services/userApiSlice";
 
 export const StudentLayout: React.FC<{ user: TUser }> = ({ user }) => {
   const [codeValue, setCodeValue] = useState<string>("");
   const navigate = useNavigate();
+  const [getOneTaskQuery] = userApiSlice.useLazyGetOneTaskQuery();
   return (
     <div className="mt-2">
       <p>
@@ -20,13 +21,18 @@ export const StudentLayout: React.FC<{ user: TUser }> = ({ user }) => {
         type="text"
         onChange={(e) => setCodeValue(e.target.value)}
       />
-
       <CommonButton
-        onClick={() => {
+        onClick={async () => {
+          const taskQueryResult = await getOneTaskQuery(codeValue);
+          if (taskQueryResult.isError) {
+            alert("Задание не найдено");
+            return;
+          }
           navigate(`../task/${codeValue}`);
         }}
         value="Найти задание"
       ></CommonButton>
+      <TaskList user={user} typeOfTaskList="studentTaskList"></TaskList>
     </div>
   );
 };

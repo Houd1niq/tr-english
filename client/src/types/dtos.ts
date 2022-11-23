@@ -16,3 +16,22 @@ export interface TaskDto {
   name: string;
   hash: string;
 }
+
+export interface UpdateStudentTaskDto {
+  hash: string;
+  cardsComplete?: boolean;
+  learningComplete?: boolean;
+  learnCorrectNumber?: number;
+  testComplete?: boolean;
+  testCorrectNumber?: number;
+}
+
+export interface StudentTaskDto {
+  name: string;
+  hash: string;
+  cardsComplete: boolean;
+  learningComplete: boolean;
+  learnCorrectNumber: number;
+  testComplete: boolean;
+  testCorrectNumber: number;
+}

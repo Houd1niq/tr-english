@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.0.6",
     "ahooks": "^3.7.2",
     "axios": "^0.27.2",
+    "cross-env": "^7.0.3",
     "nanoid": "^4.0.0",
     "qs": "^6.11.0",
     "react": "^18.2.0",
@@ -29,8 +30,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env NODE_ENV=dev OTHERFLAG=myValue react-scripts start",
+    "build": "cross-env NODE_ENV=build react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

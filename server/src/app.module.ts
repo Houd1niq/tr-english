@@ -4,17 +4,17 @@ import { AuthModule } from './auth/auth.module';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
-// import { ServeStaticModule } from '@nestjs/serve-static';
-// import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     PrismaModule,
     AuthModule,
     UserModule,
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', '..', 'client', 'build'),
-    // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'client', 'build'),
+    }),
   ],
   controllers: [UserController],
   providers: [UserService],

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./Pages/Auth/LoginPage";
 import RegisterPage from "./Pages/Auth/RegisterPage";
 import AuthLayout from "./Pages/Auth/AuthLayout";
@@ -11,6 +11,7 @@ import { RequireRole } from "./Pages/Auth/RequireRole";
 import { TaskInfoPage } from "./Pages/TaskInfoPage";
 import { TaskPage } from "./Pages/TaskPage/TaskPage";
 import { CardsLayout } from "./Pages/TaskPage/CardsLayout";
+import { LearningLayout } from "./Pages/TaskPage/LearningLayout";
 
 function App() {
   return (
@@ -50,8 +51,11 @@ function App() {
                   path="cards"
                   element={<CardsLayout></CardsLayout>}
                 ></Route>
+                <Route
+                  path="learning"
+                  element={<LearningLayout></LearningLayout>}
+                ></Route>
                 <Route path="test" element={<div>Test</div>}></Route>
-                <Route path="learning" element={<div>Learning</div>}></Route>
               </Route>
             </Route>
           </Route>
