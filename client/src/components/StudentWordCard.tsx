@@ -9,21 +9,53 @@ export const StudentWordCard: React.FC<{
 }> = ({ rusValue, engValue, idx, quantity, setCardIdx }) => {
   const rus = useRef<HTMLDivElement>(null);
   const eng = useRef<HTMLDivElement>(null);
-  const button = useRef<HTMLButtonElement>(null);
+  const container = useRef<HTMLDivElement>(null);
 
-  function nextCard(e: React.MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation();
-    setCardIdx((prev) => prev + 1);
-  }
-  function prevCard(e: React.MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation();
-    if (idx !== 0) setCardIdx((prev) => prev - 1);
-  }
+  const prevButton = (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        if (idx !== 0) {
+          setCardIdx((prev) => prev - 1);
+          if (container.current) {
+            container.current.classList.add("animate-cardPrev");
+            setTimeout(() => {
+              if (container.current)
+                container.current.classList.remove("animate-cardPrev");
+            }, 200);
+          }
+        }
+      }}
+      className="bg-bg-input w-[50%] h-full border-r border-cart-bg-dark hover:bg-light-gray"
+    >
+      {"<"}
+    </button>
+  );
+
+  const nextButton = (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        setCardIdx((prev) => prev + 1);
+        if (container.current) {
+          container.current.classList.add("animate-cardNext");
+          setTimeout(() => {
+            if (container.current)
+              container.current.classList.remove("animate-cardNext");
+          }, 200);
+        }
+      }}
+      className="bg-bg-input w-[50%] h-full hover:bg-light-gray"
+    >
+      {">"}
+    </button>
+  );
 
   return (
     <div
-      className="card-container cursor-pointer"
-      onClick={(e) => {
+      ref={container}
+      className="card-container cursor-pointer inline-block"
+      onClick={() => {
         if (rus.current && eng.current) {
           rus.current.classList.toggle("flip-rus");
           eng.current.classList.toggle("flip-eng");
@@ -41,20 +73,8 @@ export const StudentWordCard: React.FC<{
           {engValue}
         </div>
         <nav className="h-10">
-          <button
-            ref={button}
-            onClick={prevCard}
-            className="bg-bg-input w-[50%] h-full border-r border-cart-bg-dark"
-          >
-            {"<"}
-          </button>
-          <button
-            onClick={nextCard}
-            ref={button}
-            className="bg-bg-input w-[50%] h-full"
-          >
-            {">"}
-          </button>
+          {prevButton}
+          {nextButton}
         </nav>
       </div>
 
@@ -69,15 +89,8 @@ export const StudentWordCard: React.FC<{
           {rusValue}
         </div>
         <nav className="h-10">
-          <button
-            ref={button}
-            className="bg-bg-input w-[50%] h-full border-r border-cart-bg-dark"
-          >
-            {"<"}
-          </button>
-          <button ref={button} className="bg-bg-input w-[50%] h-full">
-            {">"}
-          </button>
+          {prevButton}
+          {nextButton}
         </nav>
       </div>
     </div>

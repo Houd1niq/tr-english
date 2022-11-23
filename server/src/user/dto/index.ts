@@ -6,6 +6,32 @@ type CardValue = {
   id: string;
 };
 
+export class UpdateStudentTaskDto {
+  @IsNotEmpty()
+  @IsString()
+  hash: string;
+
+  cardsComplete?: boolean;
+
+  learningComplete?: boolean;
+
+  learnCorrectNumber?: number;
+
+  testComplete?: boolean;
+
+  testCorrectNumber?: number;
+}
+
+export class StudentTaskDto {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  hash: string;
+}
+
 export class TaskDto {
   value: CardValue[];
 

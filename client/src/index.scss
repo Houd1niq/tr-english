@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 .container {
-  @apply max-w-[95%] sm:max-w-[620px] md:max-w-[740px] lg:max-w-[1000px] xl:max-w-[1180px];
+  @apply max-w-[95%] sm:max-w-[620px] md:max-w-[740px] lg:max-w-[1000px] xl:max-w-[1180px] text-main-white;
 }
 
 @font-face {
@@ -69,4 +69,12 @@ body {
   backface-visibility: hidden;
   transform: rotateX(180deg);
   transition: 0.5s;
+}
+
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../../components/FormInput";
 import LoginRoleSelector from "../../components/LoginRoleSelector";
-import { ApiSlice } from "../../services/ApiSlice";
 import { isAuthSuccess } from "../../types";
 import { useAppDispatch } from "../../store/store";
 import { setAccessToken } from "../../store/slices/authSlice";
@@ -10,7 +9,7 @@ import { authApiSlice } from "../../services/authApiSlice";
 import { CommonButton } from "../../components/CommonButton";
 
 const RegisterPage: React.FC = () => {
-  const [register, {}] = authApiSlice.useRegisterMutation();
+  const [register] = authApiSlice.useRegisterMutation();
   const [role, setRole] = useState<"teacher" | "student">("teacher");
   const [name, setName] = useState<string>("");
   const [login, setLogin] = useState<string>("");
@@ -46,7 +45,7 @@ const RegisterPage: React.FC = () => {
       }}
       className="w-[360px] py-8 bg-cart-bg-dark rounded-3xl items-center flex flex-col "
     >
-      <h2 className="text-main-white text-2xl mt-2 ">Зарегестрироваться</h2>
+      <h2 className="text-main-white text-2xl mt-2 ">Зарегистрироваться</h2>
       <FormInput
         value={name}
         getValue={setName}
@@ -70,9 +69,9 @@ const RegisterPage: React.FC = () => {
       ></FormInput>
       <LoginRoleSelector getSelectedRole={setRole}></LoginRoleSelector>
 
-      <CommonButton value="Зарегестрироваться" type="submit"></CommonButton>
+      <CommonButton value="Зарегистрироваться" type="submit"></CommonButton>
       <Link to="../login" className="text-main-purple text-[12px] mt-2">
-        Уже зарегестрированны? <br /> Войти
+        Уже зарегистрированны? <br /> Войти
       </Link>
     </form>
   );

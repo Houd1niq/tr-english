@@ -10,6 +10,7 @@ module.exports = {
         "secondary-purple": "#AF5DB2",
         "main-white": "#FAFAFA",
         "bg-input": "#39393F",
+        "light-gray": "#434344",
       },
 
       fontFamily: {
@@ -34,10 +35,28 @@ module.exports = {
           },
           "100%": { height: "48px", fontSize: "20px", position: "fixed" },
         },
+        cardNext: {
+          "0%": {
+            transform: "translateX(50px) ",
+          },
+          "100%": {
+            transform: "translateX(0px)",
+          },
+        },
+        cardPrev: {
+          "0%": {
+            transform: "translateX(-50px) ",
+          },
+          "100%": {
+            transform: "translateX(0px)",
+          },
+        },
       },
       animation: {
         headerHover: "headerHover .5s ease-in-out",
         loginLoad: "loginLoad 2s ease-in-out",
+        cardNext: "cardNext .2s ease-in-out",
+        cardPrev: "cardPrev .2s ease-in-out",
       },
     },
   },

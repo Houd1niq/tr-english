@@ -4,8 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { TaskDto } from './dto';
-import { use } from 'passport';
+import { StudentTaskDto, TaskDto, UpdateStudentTaskDto } from './dto';
 
 @Injectable()
 export class UserService {
@@ -17,10 +16,10 @@ export class UserService {
       const teacher = await this.prisma.user.findUnique({
         where: { login },
         include: {
-          tasks: true,
+          teacherTasks: true,
         },
       });
-      const tasks = teacher.tasks.map((item) => {
+      const tasks = teacher.teacherTasks.map((item) => {
         return { name: item.name, createdAt: item.createdAt, hash: item.hash };
       });
       return {
@@ -33,19 +32,20 @@ export class UserService {
       const student = await this.prisma.user.findUnique({
         where: { login },
         include: {
-          tasks: false,
+          studentTasks: true,
         },
       });
       return {
         name: student.name,
         login: student.login,
         role: student.role,
+        tasks: student.studentTasks,
       };
     }
   }
 
   async getTask(hash: string) {
-    const task = await this.prisma.task.findUnique({
+    const task = await this.prisma.teacherTask.findUnique({
       where: {
         hash,
       },
@@ -55,7 +55,7 @@ export class UserService {
   }
 
   async createTask(id: number, dto: TaskDto) {
-    const task = this.prisma.task.create({
+    return await this.prisma.teacherTask.create({
       data: {
         userId: id,
         name: dto.name,
@@ -63,7 +63,44 @@ export class UserService {
         value: dto.value,
       },
     });
-    return task;
+  }
+
+  async updateStudentTask(id: number, dto: UpdateStudentTaskDto) {
+    return await this.prisma.studentTask.update({
+      where: {
+        hash_userId: {
+          hash: dto.hash,
+          userId: id,
+        },
+      },
+      data: {
+        ...dto,
+      },
+    });
+  }
+
+  async addStudentTask(id: number, dto: StudentTaskDto) {
+    const allUserTasks = await this.prisma.studentTask.findMany({
+      where: {
+        userId: id,
+      },
+    });
+    const check = allUserTasks.some((item) => {
+      return item.hash === dto.hash;
+    });
+    if (check) {
+      return allUserTasks.find((item) => {
+        return item.hash === dto.hash;
+      });
+    } else {
+      return await this.prisma.studentTask.create({
+        data: {
+          userId: id,
+          name: dto.name,
+          hash: dto.hash,
+        },
+      });
+    }
   }
 
   private async getUserRole(login: string) {

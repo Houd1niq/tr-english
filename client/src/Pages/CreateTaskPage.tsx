@@ -3,6 +3,8 @@ import WordsInput from "../components/WordsInput";
 import { TeacherWordCard } from "../components/TeacherWordCard";
 import { userApiSlice } from "../services/userApiSlice";
 import { nanoid } from "nanoid";
+import { useNavigate } from "react-router-dom";
+import { CommonButton } from "../components/CommonButton";
 export type CardValue = {
   rus: string;
   eng: string;
@@ -10,17 +12,19 @@ export type CardValue = {
 };
 
 const initialValues: CardValue[] = [
-  { eng: "", rus: "", id: `id-${Math.random()}` },
-  { eng: "", rus: "", id: `id-${Math.random()}` },
-  { eng: "", rus: "", id: `id-${Math.random()}` },
+  { eng: "", rus: "", id: nanoid(3) },
+  { eng: "", rus: "", id: nanoid(3) },
+  { eng: "", rus: "", id: nanoid(3) },
+  { eng: "", rus: "", id: nanoid(3) },
 ];
 
 const CreateTaskPage: React.FC = () => {
   const [taskName, setTaskName] = useState("");
   const [arrayOfWord, setArrayOfWord] = useState<CardValue[]>(initialValues);
   const [createTaskQuery] = userApiSlice.useCreateTaskMutation();
+  const navigate = useNavigate();
 
-  function saveTaskHandler(
+  async function saveTaskHandler(
     values: CardValue[],
     taskName: string,
     hash: string
@@ -29,6 +33,19 @@ const CreateTaskPage: React.FC = () => {
       alert("Введите название задания");
       return;
     }
+    if (values.length < 4) {
+      alert("Задание должно содержать минимум 4 карточки");
+      return;
+    }
+
+    // values = values.map((card) => {
+    //   return {
+    //     id: card.id,
+    //     rus: card.rus.toLowerCase(),
+    //     eng: card.eng.toLowerCase(),
+    //   };
+    // });
+
     const isValid = values.every((item) => {
       return item.eng.length > 0 && item.rus.length > 0;
     });
@@ -36,11 +53,13 @@ const CreateTaskPage: React.FC = () => {
       alert("Не все карточки заполнены");
       return;
     }
-    createTaskQuery({ value: values, name: taskName, hash });
+    await createTaskQuery({ value: values, name: taskName, hash });
+    alert("Задание успешно создано");
+    navigate(`../task-info/${hash}`);
   }
 
   return (
-    <div>
+    <div className="mb-10">
       <h1 className="text-4xl mb-8 text-center text-main-white mt-2 font-bold">
         Создание задания
       </h1>
@@ -75,13 +94,13 @@ const CreateTaskPage: React.FC = () => {
           +
         </button>
       </div>
-      <button
+      <CommonButton
+        type="submit"
+        value="Сохранить"
         onClick={() => {
           saveTaskHandler(arrayOfWord, taskName, nanoid(15));
         }}
-      >
-        Сохранить
-      </button>
+      ></CommonButton>
     </div>
   );
 };

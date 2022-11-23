@@ -3,10 +3,13 @@ import { CardValue } from "../../Pages/CreateTaskPage";
 
 type CurrentTaskType = {
   name: string;
+  hash: string;
   value: CardValue[];
   cardsComplete: boolean;
   learningComplete: boolean;
+  learnCorrectNumber: number;
   testComplete: boolean;
+  testCorrectNumber: number;
 };
 
 export type TUser = {
@@ -36,26 +39,52 @@ const AuthSlice = createSlice({
       localStorage.setItem("accessToken", action.payload);
     },
 
+    // addTask(
+    //   state,
+    //   action: PayloadAction<{ name: string; createdAt: string; hash: string }>
+    // ) {
+    //   if (state.user && state.user.tasks) {
+    //     state.user.tasks.push(action.payload);
+    //   } else if (state.user) {
+    //     state.user.tasks = [action.payload];
+    //   }
+    // },
+
     setCurrentTask(
       state,
-      action: PayloadAction<{ name: string; value: CardValue[] }>
+      action: PayloadAction<{ name: string; value: CardValue[]; hash: string }>
     ) {
       if (state.user) {
         state.user.currentTask = {
           name: "",
           value: [],
+          hash: "",
           cardsComplete: false,
           testComplete: false,
+          testCorrectNumber: 0,
           learningComplete: false,
+          learnCorrectNumber: 0,
         };
         state.user.currentTask.value = action.payload.value;
         state.user.currentTask.name = action.payload.name;
+        state.user.currentTask.hash = action.payload.hash;
       }
     },
 
     setCardsComplete(state, action: PayloadAction<boolean>) {
       if (state.user && state.user.currentTask) {
         state.user.currentTask.cardsComplete = action.payload;
+      }
+    },
+
+    setLearningComplete(
+      state,
+      action: PayloadAction<{ complete: boolean; correctNumber: number }>
+    ) {
+      if (state.user && state.user.currentTask) {
+        state.user.currentTask.learningComplete = action.payload.complete;
+        state.user.currentTask.learnCorrectNumber =
+          action.payload.correctNumber;
       }
     },
 
@@ -77,5 +106,7 @@ export const {
   logOut,
   setCurrentTask,
   setCardsComplete,
+  setLearningComplete,
+  // addTask,
 } = AuthSlice.actions;
 export default AuthSlice.reducer;

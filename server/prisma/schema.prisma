@@ -18,12 +18,28 @@ model User {
   name      String   @db.VarChar(255)
   hash      String
   hashedRt  String?
-  tasks     Task[]
-
+  teacherTasks     TeacherTask[]
+  studentTasks StudentTask[]
   @@map("users")
 }
 
-model Task {
+model StudentTask {
+  createdAt DateTime @default(now())
+  name String @db.VarChar(255)
+  hash String @db.VarChar(255)
+  User   User?  @relation(fields: [userId], references: [id])
+  userId Int
+  cardsComplete Boolean @default(false)
+  learningComplete Boolean @default(false)
+  learnCorrectNumber Int @default(0)
+  testComplete Boolean @default(false)
+  testCorrectNumber Int @default(0)
+
+  @@id([hash, userId])
+  @@map("student-task")
+}
+
+model TeacherTask {
   taskId Int    @id @default(autoincrement())
   createdAt DateTime @default(now())
   value  Json[]
@@ -32,5 +48,5 @@ model Task {
   User   User?  @relation(fields: [userId], references: [id])
   userId Int?
 
-  @@map("task")
+  @@map("teacher-task")
 }

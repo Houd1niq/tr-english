@@ -4,11 +4,17 @@ import {
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store/store";
-import { isAuthSuccess, LoginDto, RegisterDto } from "../types";
+import { isAuthSuccess } from "../types";
 import { logOut, setAccessToken } from "../store/slices/authSlice";
 
+let baseUrl = window.location.origin;
+
+if (process.env.NODE_ENV === "development") {
+  baseUrl = "http://localhost:5000";
+}
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000",
+  baseUrl: baseUrl,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
@@ -36,5 +42,5 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
 
 export const ApiSlice = createApi({
   baseQuery: baseQueryWithReFetch,
-  endpoints: (build) => ({}),
+  endpoints: () => ({}),
 });
