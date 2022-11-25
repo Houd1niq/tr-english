@@ -87,6 +87,15 @@ const AuthSlice = createSlice({
           action.payload.correctNumber;
       }
     },
+    setTestComplete(
+      state,
+      action: PayloadAction<{ complete: boolean; correctNumber: number }>
+    ) {
+      if (state.user && state.user.currentTask) {
+        state.user.currentTask.testComplete = action.payload.complete;
+        state.user.currentTask.testCorrectNumber = action.payload.correctNumber;
+      }
+    },
 
     logOut(state) {
       state.accessToken = null;
@@ -107,6 +116,7 @@ export const {
   setCurrentTask,
   setCardsComplete,
   setLearningComplete,
+  setTestComplete,
   // addTask,
 } = AuthSlice.actions;
 export default AuthSlice.reducer;

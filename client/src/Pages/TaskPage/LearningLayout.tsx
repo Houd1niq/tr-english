@@ -1,8 +1,12 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { CommonButton } from "../../components/CommonButton";
 import { setLearningComplete } from "../../store/slices/authSlice";
 import { userApiSlice } from "../../services/userApiSlice";
+import {
+  triggerSuccessNotification,
+  triggerWarningNotification,
+} from "../../utils/notificationUtilities";
 
 export const LearningLayout: React.FC = () => {
   const task = useAppSelector((state) => state.authReducer.user!.currentTask);
@@ -11,14 +15,26 @@ export const LearningLayout: React.FC = () => {
   const [answer, setAnswer] = useState("");
   const dispatch = useAppDispatch();
   const [updateStudentTaskQuery] = userApiSlice.useUpdateStudentTaskMutation();
+  const answerInput = useRef<HTMLInputElement>(null);
 
   function checkAnswer(idx: number, answer: string) {
+    const defaultColor = answerInput.current!.style.backgroundColor;
     if (task!.value[idx].eng.toLocaleLowerCase() === answer.toLowerCase()) {
-      alert("Правильно");
-      setCounterValue((prevState) => prevState + 1);
+      triggerSuccessNotification("Верно", 1000);
+      answerInput.current!.style.outlineColor = "#86efac";
+      answerInput.current!.style.backgroundColor = "#b8f1cc";
+      setCounterValue((prev) => prev + 1);
+    } else {
+      triggerWarningNotification("Неверно", 1000);
+      answerInput.current!.style.outlineColor = "#ef4242";
+      answerInput.current!.style.backgroundColor = "#ee7878";
     }
-    setCurrentIndex((prev) => prev + 1);
-    setAnswer("");
+    setTimeout(() => {
+      setCurrentIndex((prevState) => prevState + 1);
+      answerInput.current!.style.outlineColor = "";
+      answerInput.current!.style.backgroundColor = defaultColor;
+      setAnswer("");
+    }, 1500);
   }
 
   useLayoutEffect(() => {
@@ -40,8 +56,8 @@ export const LearningLayout: React.FC = () => {
 
   if (task && currentIndex < task.value.length && !task.learningComplete) {
     return (
-      <div className="mt-4 ">
-        <div className="card w-[60vw] rounded-xl bg-cart-bg-dark p-4 h-[60vh] flex flex-col justify-between">
+      <div className="mt-4 w-100% lg:w-[70vw] min-h-[300px] h-[70vh]">
+        <div className="card w-full rounded-xl bg-cart-bg-dark p-4 h-full flex flex-col justify-between">
           <h3 className="text-xl">
             {currentIndex + 1}/{task.value.length}
           </h3>
@@ -50,6 +66,7 @@ export const LearningLayout: React.FC = () => {
           <form onSubmit={(e) => e.preventDefault()} className="flex flex-col">
             <label htmlFor="answer">Введите ваш ответ</label>
             <input
+              ref={answerInput}
               className="bg-bg-input p-1 mt-1 outline-none focus:outline-main-purple rounded"
               placeholder="Введите ответ (язык: Английский)"
               type="text"

@@ -6,7 +6,7 @@ export const TaskSelectorItem: React.FC<{
   link: string;
 }> = ({ value, link }) => {
   let defaultStyles =
-    "text-xl bg-cart-bg-dark w-40 h-10 rounded-md transition-colors hover:bg-bg-input";
+    "text-xl bg-cart-bg-dark sm:w-40 h-10 rounded-md transition-colors hover:bg-bg-input w";
   const location = useLocation();
   const pathnameArray = location.pathname.split("/");
   if (pathnameArray[pathnameArray.length - 1] === link) {

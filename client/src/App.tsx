@@ -12,10 +12,14 @@ import { TaskInfoPage } from "./Pages/TaskInfoPage";
 import { TaskPage } from "./Pages/TaskPage/TaskPage";
 import { CardsLayout } from "./Pages/TaskPage/CardsLayout";
 import { LearningLayout } from "./Pages/TaskPage/LearningLayout";
+import { ToastContainer } from "react-toastify";
+import React from "react";
+import { TestLayout } from "./Pages/TaskPage/TestLayout";
 
 function App() {
   return (
     <div className="bg-bg-dark text-main-white min-h-screen h-100% flex flex-col">
+      <ToastContainer></ToastContainer>
       <BrowserRouter>
         <Routes>
           {/*Публичные*/}
@@ -55,7 +59,7 @@ function App() {
                   path="learning"
                   element={<LearningLayout></LearningLayout>}
                 ></Route>
-                <Route path="test" element={<div>Test</div>}></Route>
+                <Route path="test" element={<TestLayout></TestLayout>}></Route>
               </Route>
             </Route>
           </Route>
