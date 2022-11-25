@@ -29,18 +29,19 @@ export const TestLayout: React.FC = () => {
 
   const [updateStudentTaskQuery] = userApiSlice.useUpdateStudentTaskMutation();
 
+  console.log(correctAnswerCounter);
   useEffect(() => {
     if (task && completedTaskCounter === quantity.current) {
       dispatch(
         setTestComplete({
           complete: true,
-          correctNumber: completedTaskCounter,
+          correctNumber: correctAnswerCounter,
         })
       );
       updateStudentTaskQuery({
         hash: task.hash,
         testComplete: true,
-        testCorrectNumber: completedTaskCounter,
+        testCorrectNumber: correctAnswerCounter,
       });
     }
   }, [task, completedTaskCounter]);
@@ -188,6 +189,7 @@ export const TestLayout: React.FC = () => {
         <p>Хотите пройти заново?</p>
         <CommonButton
           onClick={() => {
+            setCompletedTaskCounter(0);
             setCorrectAnswerCounter(0);
             dispatch(setTestComplete({ complete: false, correctNumber: 0 }));
             updateStudentTaskQuery({
