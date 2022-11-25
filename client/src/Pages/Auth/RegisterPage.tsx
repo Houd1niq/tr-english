@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../../components/FormInput";
 import LoginRoleSelector from "../../components/LoginRoleSelector";
-import { isAuthSuccess } from "../../types";
+import { ErrorType } from "../../types";
 import { useAppDispatch } from "../../store/store";
 import { setAccessToken } from "../../store/slices/authSlice";
 import { authApiSlice } from "../../services/authApiSlice";
@@ -10,7 +10,7 @@ import { CommonButton } from "../../components/CommonButton";
 import { triggerWarningNotification } from "../../utils/notificationUtilities";
 
 const RegisterPage: React.FC = () => {
-  const [register] = authApiSlice.useRegisterMutation();
+  const [register, registerResponse] = authApiSlice.useRegisterMutation();
   const [role, setRole] = useState<"teacher" | "student">("teacher");
   const [name, setName] = useState<string>("");
   const [login, setLogin] = useState<string>("");
@@ -18,11 +18,22 @@ const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  function cleanInputs(): void {
-    setLogin("");
-    setName("");
-    setPassword("");
-  }
+  useEffect(() => {
+    if (registerResponse.status === "fulfilled" && registerResponse.isSuccess) {
+      dispatch(setAccessToken(registerResponse.data.accessToken));
+      navigate("/profile", { replace: true });
+    }
+    if (registerResponse.status === "rejected") {
+      const error = registerResponse.error as ErrorType;
+      if (typeof error.data.message === "object") {
+        error.data.message.forEach((message) => {
+          triggerWarningNotification(message);
+        });
+      } else {
+        triggerWarningNotification(error.data.message);
+      }
+    }
+  }, [registerResponse.status]);
 
   async function singUp(
     login: string,
@@ -42,12 +53,7 @@ const RegisterPage: React.FC = () => {
       triggerWarningNotification("Логин должен содержать минимум 4 символа");
       return;
     }
-    const response = await register({ login, role, password, name });
-    if (isAuthSuccess(response)) {
-      cleanInputs();
-      dispatch(setAccessToken(response.data.accessToken));
-      navigate("/profile", { replace: true });
-    }
+    await register({ login, role, password, name });
   }
 
   return (
