@@ -1,12 +1,9 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { logOut, setUserInfo } from "../../store/slices/authSlice";
-import { authApiSlice } from "../../services/authApiSlice";
+import { setUserInfo } from "../../store/slices/authSlice";
 import { userApiSlice } from "../../services/userApiSlice";
-import { CommonButton } from "../../components/CommonButton";
 import { TeacherLayout } from "./TeacherLayout";
 import { Roller } from "react-spinners-css";
-import { useWhyDidYouUpdate } from "ahooks";
 import { StudentLayout } from "./StudentLayout";
 
 export const Profile: React.FC = () => {
@@ -45,7 +42,7 @@ export const Profile: React.FC = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-[80vh]">
       <Roller></Roller>
     </div>
   );

@@ -5,6 +5,10 @@ import { userApiSlice } from "../services/userApiSlice";
 import { nanoid } from "nanoid";
 import { useNavigate } from "react-router-dom";
 import { CommonButton } from "../components/CommonButton";
+import {
+  triggerSuccessNotification,
+  triggerWarningNotification,
+} from "../utils/notificationUtilities";
 export type CardValue = {
   rus: string;
   eng: string;
@@ -29,32 +33,26 @@ const CreateTaskPage: React.FC = () => {
     taskName: string,
     hash: string
   ) {
-    if (taskName.length === 0) {
-      alert("Введите название задания");
+    if (taskName.length < 4) {
+      triggerWarningNotification(
+        "Название задание долнжо содержать минимум 4 символа"
+      );
       return;
     }
     if (values.length < 4) {
-      alert("Задание должно содержать минимум 4 карточки");
+      triggerWarningNotification("Задание должно содержать минимум 4 карточки");
       return;
     }
-
-    // values = values.map((card) => {
-    //   return {
-    //     id: card.id,
-    //     rus: card.rus.toLowerCase(),
-    //     eng: card.eng.toLowerCase(),
-    //   };
-    // });
 
     const isValid = values.every((item) => {
       return item.eng.length > 0 && item.rus.length > 0;
     });
     if (!isValid) {
-      alert("Не все карточки заполнены");
+      triggerWarningNotification("Не все карточки заполнены");
       return;
     }
     await createTaskQuery({ value: values, name: taskName, hash });
-    alert("Задание успешно создано");
+    triggerSuccessNotification("Задание успешно создано");
     navigate(`../task-info/${hash}`);
   }
 
@@ -66,7 +64,7 @@ const CreateTaskPage: React.FC = () => {
       <WordsInput
         name="name"
         label="Название задания"
-        placeholder="Название"
+        placeholder="Введите название"
         getValue={setTaskName}
         value={taskName}
       ></WordsInput>
@@ -86,7 +84,7 @@ const CreateTaskPage: React.FC = () => {
           onClick={() => {
             setArrayOfWord((prevState) => [
               ...prevState,
-              { eng: "", rus: "", id: `id-${Math.random()}` },
+              { eng: "", rus: "", id: nanoid(3) },
             ]);
           }}
           className="bg-main-purple rounded-full text-main-white font-bold text-3xl w-10 h-10"

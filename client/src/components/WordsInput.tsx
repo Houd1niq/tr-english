@@ -21,7 +21,7 @@ const WordsInput: React.FC<{
         }}
         value={value}
         autoComplete="off"
-        className="border-b text-main-white focus:border-main-purple bg-transparent outline-none w-[500px] h-8 p-2"
+        className="border-b w-full sm:w-[250px] md:w-[300px] lg:w-[400px] text-main-white focus:border-main-purple bg-transparent outline-none h-8 p-2"
         name={name}
         placeholder={placeholder}
         type="text"

@@ -71,10 +71,19 @@ body {
   transition: 0.5s;
 }
 
-input,
-textarea,
-button,
-select,
-a {
+//input,
+//textarea,
+//button,
+//select,
+//a {
+//  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+//}
+
+.white-img {
+  filter: invert(99%) sepia(0%) saturate(0%) hue-rotate(117deg) brightness(111%)
+    contrast(99%);
+}
+
+* {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }

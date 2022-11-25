@@ -7,6 +7,7 @@ import {
   setCardsComplete,
   setCurrentTask,
   setLearningComplete,
+  setTestComplete,
 } from "../../store/slices/authSlice";
 import { TaskSelectorItem } from "../../components/TaskSelectorItem";
 
@@ -27,12 +28,17 @@ export const TaskPage: React.FC = () => {
   useEffect(() => {
     if (studentTaskResponse.status === "fulfilled") {
       const data = studentTaskResponse.data;
-      console.log(data);
       dispatch(setCardsComplete(data.cardsComplete));
       dispatch(
         setLearningComplete({
           complete: data.learningComplete,
           correctNumber: data.learnCorrectNumber,
+        })
+      );
+      dispatch(
+        setTestComplete({
+          complete: data.testComplete,
+          correctNumber: data.testCorrectNumber,
         })
       );
     }
@@ -55,14 +61,18 @@ export const TaskPage: React.FC = () => {
     }
   }, [taskQueryResult.currentData]);
 
-  if (taskQueryResult.isSuccess && taskQueryResult.currentData) {
+  if (
+    taskQueryResult.isSuccess &&
+    taskQueryResult.currentData &&
+    studentTaskResponse.status === "fulfilled"
+  ) {
     return (
       <>
-        <h2 className="text-3xl font-bold">
+        <h2 className="text-3xl mt-3 font-bold">
           {taskQueryResult.currentData.name}
         </h2>
         <nav className="mt-5">
-          <ul className="flex gap-4">
+          <ul className="flex gap-4 flex-col sm:flex-row items-stretch">
             <TaskSelectorItem value="Карточки" link="cards"></TaskSelectorItem>
             <TaskSelectorItem
               value="Заучивание"

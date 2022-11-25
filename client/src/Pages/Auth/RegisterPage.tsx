@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../store/store";
 import { setAccessToken } from "../../store/slices/authSlice";
 import { authApiSlice } from "../../services/authApiSlice";
 import { CommonButton } from "../../components/CommonButton";
+import { triggerWarningNotification } from "../../utils/notificationUtilities";
 
 const RegisterPage: React.FC = () => {
   const [register] = authApiSlice.useRegisterMutation();
@@ -29,6 +30,18 @@ const RegisterPage: React.FC = () => {
     name: string,
     role: string
   ) {
+    if (name.length < 4) {
+      triggerWarningNotification("Имя должно содержать минимум 4 символа");
+      return;
+    }
+    if (login.length < 4) {
+      triggerWarningNotification("Логин должен содержать минимум 4 символа");
+      return;
+    }
+    if (password.length < 4) {
+      triggerWarningNotification("Логин должен содержать минимум 4 символа");
+      return;
+    }
     const response = await register({ login, role, password, name });
     if (isAuthSuccess(response)) {
       cleanInputs();

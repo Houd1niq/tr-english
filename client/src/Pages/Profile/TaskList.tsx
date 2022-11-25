@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskItem } from "../../components/TaskItem";
+import { TaskItemInProfile } from "../../components/TaskItemInProfile";
 import { TUser } from "../../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -22,14 +22,14 @@ export const TaskList: React.FC<{
               day: "numeric",
             });
             return (
-              <TaskItem
+              <TaskItemInProfile
                 onClick={() => {
                   navigate(`${link}${item.hash}`, { replace: false });
                 }}
                 key={`${item.name}-${item.createdAt}`}
                 name={item.name}
                 date={dateString}
-              ></TaskItem>
+              ></TaskItemInProfile>
             );
           })
         ) : (
