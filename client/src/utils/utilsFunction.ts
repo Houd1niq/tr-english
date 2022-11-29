@@ -14,3 +14,17 @@ export function shuffle(array: any[]): any[] {
 
   return array;
 }
+
+export function firstLetterToUppercase(value: string): string {
+  return value[0].toUpperCase() + value.slice(1);
+}
+
+export function debounce(callback: (...args: any) => any, time = 1000) {
+  let timer: NodeJS.Timeout;
+  return (...args: any) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      callback(...args);
+    }, time);
+  };
+}

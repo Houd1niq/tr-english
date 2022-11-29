@@ -6,7 +6,8 @@ const WordsInput: React.FC<{
   getValue?(value: string): void;
   value?: string;
   name: string;
-}> = ({ label, placeholder, getValue, value, name }) => {
+  onChangeExtender?: Function;
+}> = ({ label, placeholder, getValue, value, name, onChangeExtender }) => {
   return (
     <div className="relative h-14">
       <label
@@ -18,6 +19,7 @@ const WordsInput: React.FC<{
       <input
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           if (getValue) getValue(event.target.value);
+          if (onChangeExtender) onChangeExtender(event.target.value);
         }}
         value={value}
         autoComplete="off"
