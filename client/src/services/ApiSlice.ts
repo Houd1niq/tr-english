@@ -41,6 +41,7 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
 };
 
 export const ApiSlice = createApi({
+  reducerPath: "trEnglishApi",
   baseQuery: baseQueryWithReFetch,
   endpoints: () => ({}),
 });
