@@ -10,6 +10,7 @@ import {
   setTestComplete,
 } from "../../store/slices/authSlice";
 import { TaskSelectorItem } from "../../components/TaskSelectorItem";
+import { firstLetterToUppercase } from "../../utils/utilsFunction";
 
 export const TaskPage: React.FC = () => {
   const navigate = useNavigate();
@@ -47,9 +48,14 @@ export const TaskPage: React.FC = () => {
   useEffect(() => {
     if (taskQueryResult.isSuccess && taskQueryResult.currentData) {
       const data = taskQueryResult.currentData;
-      dispatch(
-        setCurrentTask({ hash: data.hash, name: data.name, value: data.value })
-      );
+      const value = data.value.map((card) => {
+        return {
+          id: card.id,
+          rus: firstLetterToUppercase(card.rus),
+          eng: firstLetterToUppercase(card.eng),
+        };
+      });
+      dispatch(setCurrentTask({ hash: data.hash, name: data.name, value }));
       addStudentTask({ name: data.name, hash: data.hash });
     }
     if (

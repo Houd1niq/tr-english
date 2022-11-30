@@ -42,15 +42,17 @@ const LoginPage: React.FC = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          if (login.length === 0) {
+          const loginTrimed: string = login.trim();
+          const passwordTrimed: string = password.trim();
+          if (loginTrimed.length === 0) {
             triggerWarningNotification("Введите логин");
             return;
           }
-          if (password.length === 0) {
+          if (passwordTrimed.length === 0) {
             triggerWarningNotification("Введите пароль");
             return;
           }
-          authorize({ login, password });
+          authorize({ login: loginTrimed, password: passwordTrimed });
         }}
         className="w-[360px] py-8 bg-cart-bg-dark rounded-3xl items-center flex flex-col "
       >

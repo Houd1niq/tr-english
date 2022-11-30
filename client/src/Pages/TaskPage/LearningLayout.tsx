@@ -19,7 +19,10 @@ export const LearningLayout: React.FC = () => {
 
   function checkAnswer(idx: number, answer: string) {
     const defaultColor = answerInput.current!.style.backgroundColor;
-    if (task!.value[idx].eng.toLocaleLowerCase() === answer.toLowerCase()) {
+    if (
+      task!.value[idx].eng.trim().toLocaleLowerCase() ===
+      answer.toLowerCase().trim()
+    ) {
       triggerSuccessNotification("Верно", 1000);
       answerInput.current!.style.outlineColor = "#86efac";
       answerInput.current!.style.backgroundColor = "#b8f1cc";

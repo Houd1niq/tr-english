@@ -14,7 +14,7 @@ const FormInput: React.FC<{
       </label>
       <input
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          getValue(event.target.value);
+          getValue(event.target.value.trim());
         }}
         value={value}
         type={type}
