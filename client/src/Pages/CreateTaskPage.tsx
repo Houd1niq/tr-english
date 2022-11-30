@@ -9,6 +9,7 @@ import {
   triggerSuccessNotification,
   triggerWarningNotification,
 } from "../utils/notificationUtilities";
+import { firstLetterToUppercase } from "../utils/utilsFunction";
 export type CardValue = {
   rus: string;
   eng: string;
@@ -51,7 +52,11 @@ const CreateTaskPage: React.FC = () => {
       triggerWarningNotification("Не все карточки заполнены");
       return;
     }
-    await createTaskQuery({ value: values, name: taskName, hash });
+    await createTaskQuery({
+      value: values,
+      name: firstLetterToUppercase(taskName),
+      hash,
+    });
     triggerSuccessNotification("Задание успешно создано");
     navigate(`../task-info/${hash}`);
   }

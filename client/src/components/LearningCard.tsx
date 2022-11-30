@@ -15,7 +15,7 @@ export const LearningCard: React.FC<{
   const [isDisabled, setIsDisabled] = useState(false);
 
   function checkAnswer(answer: string) {
-    if (value.eng.toLocaleLowerCase() === answer.toLowerCase()) {
+    if (value.eng.toLocaleLowerCase() === answer.toLowerCase().trim()) {
       triggerSuccessNotification("Верно", 2000);
       answerInput.current!.style.outlineColor = "#86efac";
       answerInput.current!.style.backgroundColor = "#b8f1cc";
