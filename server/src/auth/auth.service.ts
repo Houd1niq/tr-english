@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto, RegisterDto } from './dto';
 import * as bcrypt from 'bcrypt';
@@ -40,6 +36,18 @@ export class AuthService {
           hash,
         },
       });
+
+      // Добавление в профиль ученика задания по умолчанию, для демонстрации функционала
+      if (dto.role === 'student') {
+        await this.prisma.studentTask.create({
+          data: {
+            userId: newUser.id,
+            name: 'Тестовое задание',
+            hash: 'DVxzVO1s9Pt9HoX',
+          },
+        });
+      }
+
       const tokens = await this.getTokens(newUser.id, newUser.login);
       await this.updateHashRtInDB(newUser.login, tokens.refresh_token);
       return tokens;

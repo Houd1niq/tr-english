@@ -1,24 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setUserInfo } from "../../store/slices/authSlice";
-import { userApiSlice } from "../../services/userApiSlice";
 import { TeacherLayout } from "./TeacherLayout";
 import { Roller } from "react-spinners-css";
 import { StudentLayout } from "./StudentLayout";
+import { userApiSlice } from "../../services/userApiSlice";
+import { setUserInfo } from "../../store/slices/authSlice";
 
 export const Profile: React.FC = () => {
-  const [getInfo] = userApiSlice.useLazyGetUserInfoQuery();
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.authReducer.user);
+  const [getUserInfoQuery, userResponse] =
+    userApiSlice.useLazyGetUserInfoQuery();
+  useLayoutEffect(() => {
+    if (!userResponse.isSuccess) {
+      getUserInfoQuery("");
+    }
+    if (userResponse.isSuccess && userResponse.currentData) {
+      dispatch(setUserInfo(userResponse.currentData));
+    }
+  }, [userResponse]);
+
   let greeting: string = setGreeting(new Date().getHours());
 
-  useEffect(() => {
-    const res = getInfo("");
-    res.then((res) => {
-      if (res.data) dispatch(setUserInfo(res.data));
-    });
-  }, []);
-
-  const user = useAppSelector((state) => state.authReducer.user);
   if (user) {
     return (
       <div>

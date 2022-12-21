@@ -2,12 +2,25 @@ import React, { useLayoutEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Navigate, Outlet } from "react-router-dom";
 import Header from "../../components/Header/";
-import { setUserInfo } from "../../store/slices/authSlice";
 import { userApiSlice } from "../../services/userApiSlice";
+import { setUserInfo } from "../../store/slices/authSlice";
 
 const RequireAuthorization: React.FC = () => {
+  const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.authReducer.accessToken);
-  if (token) {
+  const [getUserInfoQuery, userResponse] =
+    userApiSlice.useLazyGetUserInfoQuery();
+  useLayoutEffect(() => {
+    if (!userResponse.isSuccess && token) {
+      getUserInfoQuery("");
+    }
+    if (userResponse.isSuccess && userResponse.currentData) {
+      dispatch(setUserInfo(userResponse.currentData));
+    }
+  }, [userResponse]);
+
+  if (userResponse.isSuccess && token) {
+    console.log("access");
     return (
       <>
         <div className="container mx-auto ">
@@ -16,8 +29,12 @@ const RequireAuthorization: React.FC = () => {
         </div>
       </>
     );
+  } else if (userResponse.isError || !token) {
+    console.log("leave");
+    return <Navigate to="/auth/login"></Navigate>;
   } else {
-    return <Navigate to="/auth" replace={true}></Navigate>;
+    console.log("stay");
+    return <></>;
   }
 };
 
