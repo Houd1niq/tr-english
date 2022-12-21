@@ -26,12 +26,18 @@ export const TrueOrFalseCard: React.FC<{
       <nav className="flex gap-2 mt-3">
         <button
           disabled={isDisabled}
-          onClick={() => {
+          onClick={(e) => {
             if (value.correct) {
               setCorrectAnswerCounter((prev) => prev + 1);
               triggerSuccessNotification("Правильно!", 2000);
-            } else triggerWarningNotification("Неправильно!", 2000);
+              e.currentTarget.classList.add("bg-green-300");
+            } else {
+              triggerWarningNotification("Неправильно!", 2000);
+              e.currentTarget.classList.add("bg-red-300");
+            }
             setIsDisabled(true);
+            e.currentTarget.classList.remove("hover:bg-light-gray");
+            e.currentTarget.classList.remove("bg-bg-input");
             setCompletedTaskCounter((prev) => prev + 1);
           }}
           className="px-3 py-2 outline-none bg-bg-input rounded-xl border-main-purple border hover:bg-light-gray"
@@ -40,12 +46,18 @@ export const TrueOrFalseCard: React.FC<{
         </button>
         <button
           disabled={isDisabled}
-          onClick={() => {
+          onClick={(e) => {
             if (!value.correct) {
               setCorrectAnswerCounter((prev) => prev + 1);
+              e.currentTarget.classList.add("bg-green-300");
               triggerSuccessNotification("Правильно!", 2000);
-            } else triggerWarningNotification("Неправильно!", 2000);
+            } else {
+              e.currentTarget.classList.add("bg-red-300");
+              triggerWarningNotification("Неправильно!", 2000);
+            }
             setIsDisabled(true);
+            e.currentTarget.classList.remove("hover:bg-light-gray");
+            e.currentTarget.classList.remove("bg-bg-input");
             setCompletedTaskCounter((prev) => prev + 1);
           }}
           className="px-3 py-2 outline-none bg-bg-input rounded-xl border-main-purple border hover:bg-light-gray"

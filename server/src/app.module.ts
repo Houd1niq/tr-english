@@ -13,7 +13,7 @@ import { join } from 'path';
     AuthModule,
     UserModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'static', 'build'),
+      rootPath: join(__dirname, '..', 'static'),
     }),
   ],
   controllers: [UserController],
