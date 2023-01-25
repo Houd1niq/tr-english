@@ -58,8 +58,19 @@ export class UserController {
   //   const user = req.user as PayloadType;
   //   return await this.userService.getStudentTask(user.id, taskUrlHash);
   // }
+
   @Get('task-info/:hash')
-  async getTaskInfo(@Param('hash') taskUrlHash: string) {
-    return await this.userService.getTask(taskUrlHash);
+  async getTaskInfo(@Param('hash') taskUrlHash) {
+    return await this.userService.getTaskByHash(taskUrlHash);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('task-statistic/:hash')
+  async getTaskStatistic(
+    @Req() req: Request,
+    @Param('hash') taskUrlHash: string,
+  ) {
+    const user = req.user as PayloadType;
+    return await this.userService.getTaskStatistic(taskUrlHash, user.id);
   }
 }

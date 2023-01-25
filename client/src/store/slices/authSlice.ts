@@ -38,18 +38,6 @@ const AuthSlice = createSlice({
       state.accessToken = action.payload;
       localStorage.setItem("accessToken", action.payload);
     },
-
-    // addTask(
-    //   state,
-    //   action: PayloadAction<{ name: string; createdAt: string; hash: string }>
-    // ) {
-    //   if (state.user && state.user.tasks) {
-    //     state.user.tasks.push(action.payload);
-    //   } else if (state.user) {
-    //     state.user.tasks = [action.payload];
-    //   }
-    // },
-
     setCurrentTask(
       state,
       action: PayloadAction<{ name: string; value: CardValue[]; hash: string }>

@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -44,7 +45,7 @@ export class UserService {
     }
   }
 
-  async getTask(hash: string) {
+  async getTaskByHash(hash: string) {
     const task = await this.prisma.teacherTask.findUnique({
       where: {
         hash,
@@ -52,6 +53,52 @@ export class UserService {
     });
     if (!task) throw new BadRequestException('Такого задания не существует');
     return task;
+  }
+
+  async getTaskStatistic(hash: string, userId: number) {
+    const task = await this.prisma.teacherTask.findUnique({
+      where: {
+        hash,
+      },
+    });
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (user.role === 'student' || task.userId !== userId) {
+      throw new ForbiddenException('Нет доступа');
+    }
+    if (!task) throw new BadRequestException('Такого задания не существует');
+
+    if (user.role === 'teacher' && task.userId === userId) {
+      const studentTasks = await this.prisma.studentTask.findMany({
+        where: { hash: task.hash },
+        select: {
+          User: {
+            select: {
+              name: true,
+            },
+          },
+          cardsComplete: true,
+          learningComplete: true,
+          testComplete: true,
+          testCorrectNumber: true,
+          learnCorrectNumber: true,
+        },
+      });
+      let studentStatisticForTask = studentTasks.map((item) => {
+        const obj = {
+          ...item,
+          studentName: item.User.name,
+        };
+        delete obj.User;
+        return obj;
+      });
+      return { ...task, studentStatistic: studentStatisticForTask };
+    }
   }
 
   async createTask(id: number, dto: TaskDto) {
