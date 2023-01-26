@@ -11,6 +11,9 @@ export class RtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
         RtStrategy.extractJwtFromCookie,
       ]),
       ignoreExpiration: false,
+      jsonWebTokenOptions: {
+        maxAge: '30d',
+      },
       secretOrKey: 'rt-secret123',
     });
   }

@@ -13,6 +13,9 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
+      jsonWebTokenOptions: {
+        maxAge: '15m',
+      },
       secretOrKey: 'at-secret123',
     });
   }

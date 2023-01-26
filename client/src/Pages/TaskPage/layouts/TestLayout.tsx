@@ -1,13 +1,13 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { shuffle } from "../../utils/utilsFunction";
-import { CardValue } from "../CreateTaskPage";
-import { TrueOrFalseCard } from "../../components/TrueOrFalseCard";
-import { TestCard } from "../../components/TestCard";
-import { CommonButton } from "../../components/CommonButton";
-import { LearningCard } from "../../components/LearningCard";
-import { setTestComplete } from "../../store/slices/authSlice";
-import { userApiSlice } from "../../services/userApiSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { shuffle } from "../../../utils/utilsFunction";
+import { CardValue } from "../../CreateTaskPage";
+import { TrueOrFalseCard } from "../../../components/TrueOrFalseCard";
+import { TestCard } from "../../../components/TestCard";
+import { CommonButton } from "../../../components/CommonButton";
+import { LearningCard } from "../../../components/LearningCard";
+import { userApiSlice } from "../../../services/trEnglishApi/userApiSlice";
+import { setTestComplete } from "../../../store/slices/currentTaskSlice";
 
 export type TrueOrFalseItem = {
   value: string;
@@ -18,7 +18,7 @@ export type TrueOrFalseItem = {
 export type TestItem = { question: CardValue; answers: CardValue[] };
 
 export const TestLayout: React.FC = () => {
-  const task = useAppSelector((state) => state.authReducer.user!.currentTask);
+  const task = useAppSelector((state) => state.currentTaskReducer);
   const [trueOrFalse, setTrueOrFalse] = useState<TrueOrFalseItem[]>();
   const [test, setTest] = useState<TestItem[]>();
   const [learning, setLearning] = useState<CardValue[]>();
@@ -26,10 +26,8 @@ export const TestLayout: React.FC = () => {
   const [completedTaskCounter, setCompletedTaskCounter] = useState(0);
   const dispatch = useAppDispatch();
   let quantity = useRef<number | null>(null);
-
   const [updateStudentTaskQuery] = userApiSlice.useUpdateStudentTaskMutation();
 
-  console.log(correctAnswerCounter);
   useEffect(() => {
     if (task && completedTaskCounter === quantity.current) {
       dispatch(

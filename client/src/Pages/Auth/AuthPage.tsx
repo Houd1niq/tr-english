@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-const AuthLayout: React.FC = () => {
+const AuthPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,4 +30,4 @@ const AuthLayout: React.FC = () => {
   );
 };
 
-export default AuthLayout;
+export default AuthPage;

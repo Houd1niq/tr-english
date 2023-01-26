@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { userApiSlice } from "../services/userApiSlice";
+import { userApiSlice } from "../services/trEnglishApi/userApiSlice";
 import { Roller } from "react-spinners-css";
 import { triggerSuccessNotification } from "../utils/notificationUtilities";
 import copyIcon from "../assets/copy-svgrepo-com.svg";
@@ -86,22 +86,29 @@ export const TaskInfoPage: React.FC = () => {
         <div className="mt-3">
           <h2 className="text-xl sm:text-2xl mb-1">Статистика</h2>
           <ul>
-            {studentStatistic.map((student) => {
-              return (
-                <li key={student.studentName + student.testCorrectNumber}>
-                  <div className="mt-2 bg-cart-bg-dark p-2 rounded">
-                    <p className="">Имя студента: {student.studentName}</p>
-                    <p>
-                      Количество правильно выполненных карточек в заучивании:{" "}
-                      {student.learnCorrectNumber}
-                    </p>
-                    <p>
-                      Количество баллов в тесте: {student.testCorrectNumber}
-                    </p>
-                  </div>
-                </li>
-              );
-            })}
+            {studentStatistic.length > 0 &&
+              studentStatistic.map((student) => {
+                return (
+                  <li key={student.studentName + student.testCorrectNumber}>
+                    <div className="mt-2 bg-cart-bg-dark p-2 rounded">
+                      <p className="">Имя студента: {student.studentName}</p>
+                      <p>
+                        Количество правильно выполненных карточек в заучивании:{" "}
+                        {student.learnCorrectNumber}
+                      </p>
+                      <p>
+                        Количество баллов в тесте: {student.testCorrectNumber}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+
+            {studentStatistic.length === 0 && (
+              <h2 className="text-2xl text-blue-400">
+                Пока никто не решал это задание :
+              </h2>
+            )}
           </ul>
         </div>
       </div>

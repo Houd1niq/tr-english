@@ -1,9 +1,9 @@
 import React, { useLayoutEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { TeacherLayout } from "./TeacherLayout";
+import { TeacherLayout } from "./layouts/TeacherLayout";
 import { Roller } from "react-spinners-css";
-import { StudentLayout } from "./StudentLayout";
-import { userApiSlice } from "../../services/userApiSlice";
+import { StudentLayout } from "./layouts/StudentLayout";
+import { userApiSlice } from "../../services/trEnglishApi/userApiSlice";
 import { setUserInfo } from "../../store/slices/authSlice";
 
 export const Profile: React.FC = () => {

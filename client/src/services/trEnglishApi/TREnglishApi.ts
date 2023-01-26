@@ -3,9 +3,9 @@ import {
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../store/store";
-import { isAuthSuccess } from "../types";
-import { logOut, setAccessToken } from "../store/slices/authSlice";
+import { RootState } from "../../store/store";
+import { logOut, setAccessToken } from "../../store/slices/authSlice";
+import { refreshResponse } from "../../types";
 
 let baseUrl = window.location.origin;
 
@@ -29,8 +29,12 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
   if (result.error && result.error.status === "FETCH_ERROR")
     api.dispatch(logOut());
   if (result.error && result.error.status === 401) {
-    const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
-    if (isAuthSuccess(refreshResult)) {
+    const refreshResult = (await baseQuery(
+      "/auth/refresh",
+      api,
+      extraOptions
+    )) as refreshResponse;
+    if (refreshResult.data.accessToken) {
       api.dispatch(setAccessToken(refreshResult.data.accessToken));
     } else {
       api.dispatch(logOut());
@@ -40,7 +44,7 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
   return result;
 };
 
-export const ApiSlice = createApi({
+export const TrEnglishApi = createApi({
   reducerPath: "trEnglishApi",
   baseQuery: baseQueryWithReFetch,
   endpoints: () => ({}),

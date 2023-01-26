@@ -1,9 +1,9 @@
 import React from "react";
-import { TaskItemInProfile } from "../../components/TaskItemInProfile";
-import { TUser } from "../../store/slices/authSlice";
+import { TaskItemInProfile } from "./TaskItemInProfile";
+import { TUser } from "../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
-export const TaskList: React.FC<{
+export const ProfileTaskList: React.FC<{
   user: TUser;
   typeOfTaskList: "teacherTaskList" | "studentTaskList";
 }> = ({ user, typeOfTaskList }) => {

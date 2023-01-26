@@ -1,20 +1,20 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LoginPage from "./Pages/Auth/LoginPage";
-import RegisterPage from "./Pages/Auth/RegisterPage";
-import AuthLayout from "./Pages/Auth/AuthLayout";
+import LoginLayout from "./Pages/Auth/layouts/LoginLayout";
+import RegisterLayout from "./Pages/Auth/layouts/RegisterLayout";
+import AuthPage from "./Pages/Auth/AuthPage";
 import NotFound from "./Pages/NotFound";
 import { Profile } from "./Pages/Profile/Profile";
 import StartPage from "./Pages/StartPage";
-import RequireAuthorization from "./Pages/Auth/RequireAuthorization";
+import RequireAuthorization from "./Pages/AccessControlLayouts/RequireAuthorization";
 import CreateTaskPage from "./Pages/CreateTaskPage";
-import { RequireRole } from "./Pages/Auth/RequireRole";
+import { RequireRole } from "./Pages/AccessControlLayouts/RequireRole";
 import { TaskInfoPage } from "./Pages/TaskInfoPage";
 import { TaskPage } from "./Pages/TaskPage/TaskPage";
-import { CardsLayout } from "./Pages/TaskPage/CardsLayout";
-import { LearningLayout } from "./Pages/TaskPage/LearningLayout";
+import { CardsLayout } from "./Pages/TaskPage/layouts/CardsLayout";
+import { LearningLayout } from "./Pages/TaskPage/layouts/LearningLayout";
 import { ToastContainer } from "react-toastify";
 import React from "react";
-import { TestLayout } from "./Pages/TaskPage/TestLayout";
+import { TestLayout } from "./Pages/TaskPage/layouts/TestLayout";
 
 function App() {
   return (
@@ -24,11 +24,11 @@ function App() {
         <Routes>
           {/*Публичные*/}
           <Route path="" element={<StartPage></StartPage>}></Route>
-          <Route path="auth" element={<AuthLayout></AuthLayout>}>
-            <Route path="login" element={<LoginPage></LoginPage>}></Route>
+          <Route path="auth" element={<AuthPage></AuthPage>}>
+            <Route path="login" element={<LoginLayout></LoginLayout>}></Route>
             <Route
               path="register"
-              element={<RegisterPage></RegisterPage>}
+              element={<RegisterLayout></RegisterLayout>}
             ></Route>
           </Route>
 

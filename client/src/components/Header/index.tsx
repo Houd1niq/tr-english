@@ -1,7 +1,7 @@
 import React from "react";
 import { HeaderItem } from "./HeaderItem";
 import { useNavigate } from "react-router-dom";
-import { authApiSlice } from "../../services/authApiSlice";
+import { authApiSlice } from "../../services/trEnglishApi/authApiSlice";
 import { useAppDispatch } from "../../store/store";
 import { logOut } from "../../store/slices/authSlice";
 

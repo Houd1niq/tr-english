@@ -1,19 +1,21 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
-import { ApiSlice } from "../services/ApiSlice";
-import { translationApiSlice } from "../services/translationApiSlice";
+import { TrEnglishApi } from "../services/trEnglishApi/TREnglishApi";
+import { translationApi } from "../services/transilationApi/translationApi";
+import currentTaskReducer from "./slices/currentTaskSlice";
 
 const store = configureStore({
   reducer: {
     authReducer,
-    [ApiSlice.reducerPath]: ApiSlice.reducer,
-    [translationApiSlice.reducerPath]: translationApiSlice.reducer,
+    currentTaskReducer,
+    [TrEnglishApi.reducerPath]: TrEnglishApi.reducer,
+    [translationApi.reducerPath]: translationApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(
-      ApiSlice.middleware,
-      translationApiSlice.middleware
+      TrEnglishApi.middleware,
+      translationApi.middleware
     );
   },
 });

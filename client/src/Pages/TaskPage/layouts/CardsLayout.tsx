@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { StudentWordCard } from "../../components/StudentWordCard";
-import { CommonButton } from "../../components/CommonButton";
-import { setCardsComplete } from "../../store/slices/authSlice";
-import { userApiSlice } from "../../services/userApiSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { StudentWordCard } from "../../../components/StudentWordCard";
+import { CommonButton } from "../../../components/CommonButton";
+import { userApiSlice } from "../../../services/trEnglishApi/userApiSlice";
+import { setCardsComplete } from "../../../store/slices/currentTaskSlice";
 
 export const CardsLayout: React.FC = () => {
-  const task = useAppSelector((state) => state.authReducer.user!.currentTask);
+  const task = useAppSelector((state) => state.currentTaskReducer);
   const [cardIdx, setCardIdx] = useState(0);
   const dispatch = useAppDispatch();
   const [updateStudentTaskQuery] = userApiSlice.useUpdateStudentTaskMutation();

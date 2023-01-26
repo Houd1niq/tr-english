@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import FormInput from "../../components/FormInput";
-import LoginRoleSelector from "../../components/LoginRoleSelector";
-import { ErrorType } from "../../types";
-import { useAppDispatch } from "../../store/store";
-import { setAccessToken } from "../../store/slices/authSlice";
-import { authApiSlice } from "../../services/authApiSlice";
-import { CommonButton } from "../../components/CommonButton";
-import { triggerWarningNotification } from "../../utils/notificationUtilities";
+import FormInput from "../../../components/FormInput";
+import LoginRoleSelector from "../../../components/LoginRoleSelector";
+import { ErrorType } from "../../../types";
+import { useAppDispatch } from "../../../store/store";
+import { setAccessToken } from "../../../store/slices/authSlice";
+import { authApiSlice } from "../../../services/trEnglishApi/authApiSlice";
+import { CommonButton } from "../../../components/CommonButton";
+import { triggerWarningNotification } from "../../../utils/notificationUtilities";
 
-const RegisterPage: React.FC = () => {
+const RegisterLayout: React.FC = () => {
   const [register, registerResponse] = authApiSlice.useRegisterMutation();
   const [role, setRole] = useState<"teacher" | "student">("teacher");
   const [name, setName] = useState<string>("");
@@ -96,4 +96,4 @@ const RegisterPage: React.FC = () => {
   );
 };
 
-export default RegisterPage;
+export default RegisterLayout;
