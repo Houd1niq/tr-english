@@ -105,8 +105,8 @@ export const TaskInfoPage: React.FC = () => {
               })}
 
             {studentStatistic.length === 0 && (
-              <h2 className="text-2xl text-blue-400">
-                Пока никто не решал это задание :
+              <h2 className="text-2xl text-red-400">
+                Пока никто не решал это задание :(
               </h2>
             )}
           </ul>
