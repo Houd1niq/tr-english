@@ -15,7 +15,7 @@ export const Profile: React.FC = () => {
     if (!userResponse.isSuccess) {
       getUserInfoQuery("");
     }
-    if (userResponse.isSuccess && userResponse.currentData) {
+    if (userResponse.status === "fulfilled" && userResponse.currentData) {
       dispatch(setUserInfo(userResponse.currentData));
     }
   }, [userResponse]);
