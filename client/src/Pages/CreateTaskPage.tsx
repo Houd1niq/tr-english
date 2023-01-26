@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import WordsInput from "../components/WordsInput";
 import { TeacherWordCard } from "../components/TeacherWordCard";
-import { userApiSlice } from "../services/userApiSlice";
+import { userApiSlice } from "../services/trEnglishApi/userApiSlice";
 import { nanoid } from "nanoid";
 import { useNavigate } from "react-router-dom";
 import { CommonButton } from "../components/CommonButton";

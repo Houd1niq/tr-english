@@ -1,23 +1,17 @@
-import React, { useLayoutEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+import React, { useEffect } from "react";
+import { useAppSelector } from "../../store/store";
 import { Navigate, Outlet } from "react-router-dom";
-import Header from "../../components/Header/";
-import { userApiSlice } from "../../services/userApiSlice";
-import { setUserInfo } from "../../store/slices/authSlice";
+import Header from "../../components/Header";
+import { userApiSlice } from "../../services/trEnglishApi/userApiSlice";
 
 const RequireAuthorization: React.FC = () => {
-  const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.authReducer.accessToken);
   const [getUserInfoQuery, userResponse] =
     userApiSlice.useLazyGetUserInfoQuery();
-  useLayoutEffect(() => {
-    if (!userResponse.isSuccess && token) {
-      getUserInfoQuery("");
-    }
-    if (userResponse.isSuccess && userResponse.currentData) {
-      dispatch(setUserInfo(userResponse.currentData));
-    }
-  }, [userResponse]);
+
+  useEffect(() => {
+    getUserInfoQuery("");
+  }, []);
 
   if (userResponse.isSuccess && token) {
     console.log("access");

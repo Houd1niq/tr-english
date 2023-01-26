@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import WordsInput from "./WordsInput";
 import { CardValue } from "../Pages/CreateTaskPage";
-import { translationApiSlice } from "../services/translationApiSlice";
+import { translationApi } from "../services/transilationApi/translationApi";
 import { debounce, firstLetterToUppercase } from "../utils/utilsFunction";
 
 export const TeacherWordCard: React.FC<{
@@ -13,7 +13,7 @@ export const TeacherWordCard: React.FC<{
   const [arrayOfTranslations, setArrayOfTranslations] = useState<string[]>([]);
 
   const [getTranslation, translationResponse] =
-    translationApiSlice.useLazyGetTranslationQuery();
+    translationApi.useLazyGetTranslationQuery();
 
   const debouncedGetTranslation = useCallback(
     debounce(getTranslation, 1000),

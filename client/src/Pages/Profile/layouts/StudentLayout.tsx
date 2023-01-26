@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { TUser } from "../../store/slices/authSlice";
-import { CommonButton } from "../../components/CommonButton";
+import { TUser } from "../../../store/slices/authSlice";
+import { CommonButton } from "../../../components/CommonButton";
 import { useNavigate } from "react-router-dom";
-import { TaskList } from "./TaskList";
-import { userApiSlice } from "../../services/userApiSlice";
+import { ProfileTaskList } from "../../../components/ProfileTaskList";
+import { userApiSlice } from "../../../services/trEnglishApi/userApiSlice";
+import { triggerWarningNotification } from "../../../utils/notificationUtilities";
 
 export const StudentLayout: React.FC<{ user: TUser }> = ({ user }) => {
   const [codeValue, setCodeValue] = useState<string>("");
@@ -25,14 +26,17 @@ export const StudentLayout: React.FC<{ user: TUser }> = ({ user }) => {
         onClick={async () => {
           const taskQueryResult = await getOneTaskQuery(codeValue);
           if (taskQueryResult.isError) {
-            alert("Задание не найдено");
+            triggerWarningNotification("Задание не найдено");
             return;
           }
           navigate(`../task/${codeValue}`);
         }}
         value="Найти задание"
       ></CommonButton>
-      <TaskList user={user} typeOfTaskList="studentTaskList"></TaskList>
+      <ProfileTaskList
+        user={user}
+        typeOfTaskList="studentTaskList"
+      ></ProfileTaskList>
     </div>
   );
 };

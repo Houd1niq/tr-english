@@ -16,6 +16,7 @@ export const RequireRole: React.FC<{ role: "teacher" | "student" }> = ({
       </div>
     );
   }
+
   if (user && user.role !== role) {
     return (
       <div className="flex flex-col items-center mt-3">

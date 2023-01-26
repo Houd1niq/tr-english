@@ -1,15 +1,15 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { CommonButton } from "../../components/CommonButton";
-import { setLearningComplete } from "../../store/slices/authSlice";
-import { userApiSlice } from "../../services/userApiSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { CommonButton } from "../../../components/CommonButton";
+import { userApiSlice } from "../../../services/trEnglishApi/userApiSlice";
 import {
   triggerSuccessNotification,
   triggerWarningNotification,
-} from "../../utils/notificationUtilities";
+} from "../../../utils/notificationUtilities";
+import { setLearningComplete } from "../../../store/slices/currentTaskSlice";
 
 export const LearningLayout: React.FC = () => {
-  const task = useAppSelector((state) => state.authReducer.user!.currentTask);
+  const task = useAppSelector((state) => state.currentTaskReducer);
   const [counter, setCounterValue] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answer, setAnswer] = useState("");

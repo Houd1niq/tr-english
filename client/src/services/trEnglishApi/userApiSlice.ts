@@ -1,6 +1,6 @@
-import { ApiSlice } from "./ApiSlice";
-import { StudentTaskDto, TaskDto, UpdateStudentTaskDto } from "../types";
-import { TUser } from "../store/slices/authSlice";
+import { TrEnglishApi } from "./TREnglishApi";
+import { StudentTaskDto, TaskDto, UpdateStudentTaskDto } from "../../types";
+import { TUser } from "../../store/slices/authSlice";
 
 type statisticForTask = {
   createdAt: string;
@@ -14,7 +14,7 @@ type statisticForTask = {
   }[];
 };
 
-export const userApiSlice = ApiSlice.injectEndpoints({
+export const userApiSlice = TrEnglishApi.injectEndpoints({
   endpoints: (build) => ({
     getUserInfo: build.query<TUser, any>({
       query: () => ({

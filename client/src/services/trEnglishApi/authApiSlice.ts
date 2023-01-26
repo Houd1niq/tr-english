@@ -1,7 +1,7 @@
-import { ApiSlice } from "./ApiSlice";
-import { LoginDto, RegisterDto } from "../types";
+import { TrEnglishApi } from "./TREnglishApi";
+import { LoginDto, RegisterDto } from "../../types";
 
-export const authApiSlice = ApiSlice.injectEndpoints({
+export const authApiSlice = TrEnglishApi.injectEndpoints({
   endpoints: (build) => ({
     logout: build.mutation({
       query: () => ({

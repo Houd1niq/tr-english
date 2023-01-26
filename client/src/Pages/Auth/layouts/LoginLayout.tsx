@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import FormInput from "../../components/FormInput";
-import { useAppDispatch } from "../../store/store";
-import { setAccessToken } from "../../store/slices/authSlice";
-import { authApiSlice } from "../../services/authApiSlice";
-import { CommonButton } from "../../components/CommonButton";
-import { ErrorType } from "../../types";
-import { triggerWarningNotification } from "../../utils/notificationUtilities";
+import FormInput from "../../../components/FormInput";
+import { useAppDispatch } from "../../../store/store";
+import { setAccessToken } from "../../../store/slices/authSlice";
+import { authApiSlice } from "../../../services/trEnglishApi/authApiSlice";
+import { CommonButton } from "../../../components/CommonButton";
+import { ErrorType } from "../../../types";
+import { triggerWarningNotification } from "../../../utils/notificationUtilities";
 
-const LoginPage: React.FC = () => {
+const LoginLayout: React.FC = () => {
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [authorize, authResponse] = authApiSlice.useLoginMutation();
@@ -80,4 +80,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default LoginLayout;

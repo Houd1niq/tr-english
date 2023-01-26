@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AnswerButton } from "./AnswerButton";
-import { TestItem } from "../Pages/TaskPage/TestLayout";
+import { TestItem } from "../Pages/TaskPage/layouts/TestLayout";
 
 export const TestCard: React.FC<{
   value: TestItem;

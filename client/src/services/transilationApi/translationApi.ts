@@ -9,7 +9,7 @@ const baseQuery = fetchBaseQuery({
 const API_KEY: string =
   "dict.1.1.20221126T105728Z.94371fc2397178e6.dec2f5bbb7e6829272ab297c9ece6f51af6cb3b3";
 
-export const translationApiSlice = createApi({
+export const translationApi = createApi({
   reducerPath: "translationApi",
   baseQuery: baseQuery,
   endpoints: (builder) => ({
