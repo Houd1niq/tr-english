@@ -14,7 +14,6 @@ const RequireAuthorization: React.FC = () => {
   }, []);
 
   if (userResponse.isSuccess && token) {
-    console.log("access");
     return (
       <>
         <div className="container mx-auto ">
@@ -24,10 +23,8 @@ const RequireAuthorization: React.FC = () => {
       </>
     );
   } else if (userResponse.isError || !token) {
-    console.log("leave");
     return <Navigate to="/auth/login"></Navigate>;
   } else {
-    console.log("stay");
     return <></>;
   }
 };
