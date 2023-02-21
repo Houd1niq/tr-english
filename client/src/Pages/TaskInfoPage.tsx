@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { userApiSlice } from "../services/trEnglishApi/userApiSlice";
 import { Roller } from "react-spinners-css";
@@ -24,24 +24,19 @@ export const TaskInfoPage: React.FC = () => {
     }
   }
 
-  const [getOneTaskQuery, taskQueryResult] =
-    userApiSlice.useLazyGetTaskStatisticQuery();
+  const statisticQuery = userApiSlice.useGetTaskStatisticQuery(hashUrl);
 
-  useEffect(() => {
-    getOneTaskQuery(hashUrl);
-  }, []);
-
-  if (taskQueryResult.isSuccess && taskQueryResult.currentData) {
-    const studentStatistic = taskQueryResult.currentData.studentStatistic;
+  if (statisticQuery.isSuccess && statisticQuery.currentData) {
+    const studentStatistic = statisticQuery.currentData.studentStatistic;
     return (
       <div className="text-sm sm:text-lg mt-3">
         <div>
           <h2 className="text-xl sm:text-2xl mb-1">
-            Название задания: {taskQueryResult.currentData.name}
+            Название задания: {statisticQuery.currentData.name}
           </h2>
           <p>
             Вермя создания задания:{" "}
-            {new Date(taskQueryResult.data.createdAt).toLocaleDateString(
+            {new Date(statisticQuery.currentData.createdAt).toLocaleDateString(
               "ru-RU",
               {
                 day: "numeric",
@@ -115,7 +110,7 @@ export const TaskInfoPage: React.FC = () => {
     );
   }
 
-  if (taskQueryResult.isError) {
+  if (statisticQuery.isError) {
     return (
       <>
         <h2>Error</h2>
