@@ -43,7 +43,7 @@ export class AuthService {
           data: {
             userId: newUser.id,
             name: 'Тестовое задание',
-            hash: 'DVxzVO1s9Pt9HoX',
+            hash: 'dfGtIp-pcPFo0rK',
           },
         });
       }
