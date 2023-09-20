@@ -1,28 +1,15 @@
-import React, { useLayoutEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+import React from "react";
 import { TeacherLayout } from "./layouts/TeacherLayout";
 import { Roller } from "react-spinners-css";
 import { StudentLayout } from "./layouts/StudentLayout";
 import { userApiSlice } from "../../services/trEnglishApi/userApiSlice";
-import { setUserInfo } from "../../store/slices/authSlice";
 
 export const Profile: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.authReducer.user);
-  const [getUserInfoQuery, userResponse] =
-    userApiSlice.useLazyGetUserInfoQuery();
-  useLayoutEffect(() => {
-    if (!userResponse.isSuccess) {
-      getUserInfoQuery("");
-    }
-    if (userResponse.status === "fulfilled" && userResponse.currentData) {
-      dispatch(setUserInfo(userResponse.currentData));
-    }
-  }, [userResponse]);
-
+  const userResponse = userApiSlice.useGetUserInfoQuery("");
   let greeting: string = setGreeting(new Date().getHours());
 
-  if (user) {
+  if (userResponse.isSuccess && userResponse.data) {
+    const userData = userResponse.data;
     return (
       <div>
         <div className="">
@@ -31,14 +18,14 @@ export const Profile: React.FC = () => {
               Профиль
             </h1>
             <h2 className="text-2xl text-center text-main-white mt-2">
-              {greeting}, {user.name}
+              {greeting}, {userData.name}
             </h2>
           </div>
         </div>
-        {user.role === "teacher" ? (
-          <TeacherLayout user={user}></TeacherLayout>
+        {userData.role === "teacher" ? (
+          <TeacherLayout></TeacherLayout>
         ) : (
-          <StudentLayout user={user}></StudentLayout>
+          <StudentLayout></StudentLayout>
         )}
       </div>
     );

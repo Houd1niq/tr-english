@@ -13,5 +13,4 @@ const StartPage = () => {
   }, [token]);
   return <></>;
 };
-
 export default StartPage;

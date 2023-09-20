@@ -25,10 +25,6 @@ export class UpdateStudentTaskDto {
 export class StudentTaskDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
-
-  @IsNotEmpty()
-  @IsString()
   hash: string;
 }
 

@@ -21,6 +21,7 @@ export const userApiSlice = TrEnglishApi.injectEndpoints({
         url: "user/info",
         method: "GET",
       }),
+      providesTags: ["User"],
     }),
 
     getOneTask: build.query<TaskDto & { createdAt: string }, string>({
@@ -46,17 +47,16 @@ export const userApiSlice = TrEnglishApi.injectEndpoints({
         method: "PUT",
         body: updateTaskInfo,
       }),
+      invalidatesTags: ["StudentTask"],
     }),
 
-    addStudentTask: build.mutation<
-      StudentTaskDto,
-      { name: string; hash: string }
-    >({
+    addStudentTask: build.mutation<StudentTaskDto, { hash: string }>({
       query: (task) => ({
         url: `user/student-task`,
         method: "POST",
         body: task,
       }),
+      invalidatesTags: ["StudentTask", "User"],
     }),
 
     getStudentTask: build.query<StudentTaskDto, string>({
@@ -64,6 +64,7 @@ export const userApiSlice = TrEnglishApi.injectEndpoints({
         url: `user/student-task/${hash}`,
         method: "GET",
       }),
+      providesTags: ["StudentTask"],
     }),
 
     createTask: build.mutation({

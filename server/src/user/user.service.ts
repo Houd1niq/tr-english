@@ -17,36 +17,60 @@ export class UserService {
       const teacher = await this.prisma.user.findUnique({
         where: { login },
         include: {
-          teacherTasks: true,
+          Teacher: {
+            include: {
+              Task: true,
+            },
+          },
         },
       });
-      const tasks = teacher.teacherTasks.map((item) => {
+      const tasks = teacher.Teacher.Task.map((item) => {
         return { name: item.name, createdAt: item.createdAt, hash: item.hash };
       });
       return {
         name: teacher.name,
         login: teacher.login,
-        role: teacher.role,
+        role: 'teacher',
         tasks,
       };
     } else {
       const student = await this.prisma.user.findUnique({
         where: { login },
         include: {
-          studentTasks: true,
+          Student: {
+            include: {
+              StudentTask: {
+                include: {
+                  Task: {
+                    select: {
+                      name: true,
+                      createdAt: true,
+                      hash: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
       return {
         name: student.name,
         login: student.login,
-        role: student.role,
-        tasks: student.studentTasks,
+        role: 'student',
+        tasks: student.Student.StudentTask.map((item) => {
+          return {
+            name: item.Task.name,
+            createdAt: item.Task.createdAt,
+            hash: item.Task.hash,
+          };
+        }),
       };
     }
   }
 
   async getTaskByHash(hash: string) {
-    const task = await this.prisma.teacherTask.findUnique({
+    const task = await this.prisma.task.findUnique({
       where: {
         hash,
       },
@@ -56,30 +80,33 @@ export class UserService {
   }
 
   async getTaskStatistic(hash: string, userId: number) {
-    const task = await this.prisma.teacherTask.findUnique({
+    const task = await this.prisma.task.findUnique({
       where: {
         hash,
       },
     });
 
-    const user = await this.prisma.user.findUnique({
+    const teacher = await this.prisma.teacher.findUnique({
       where: {
         id: userId,
       },
     });
 
-    if (user.role === 'student' || task.userId !== userId) {
-      throw new ForbiddenException('Нет доступа');
-    }
+    if (!teacher)
+      throw new BadRequestException('Такого пользователя не существует');
     if (!task) throw new BadRequestException('Такого задания не существует');
 
-    if (user.role === 'teacher' && task.userId === userId) {
+    if (teacher && task.teacherId === teacher.id) {
       const studentTasks = await this.prisma.studentTask.findMany({
-        where: { hash: task.hash },
+        where: { taskId: task.taskId },
         select: {
-          User: {
-            select: {
-              name: true,
+          Student: {
+            include: {
+              User: {
+                select: {
+                  name: true,
+                },
+              },
             },
           },
           cardsComplete: true,
@@ -92,9 +119,9 @@ export class UserService {
       let studentStatisticForTask = studentTasks.map((item) => {
         const obj = {
           ...item,
-          studentName: item.User.name,
+          studentName: item.Student.User.name,
         };
-        delete obj.User;
+        delete obj.Student;
         return obj;
       });
       return { ...task, studentStatistic: studentStatisticForTask };
@@ -102,9 +129,9 @@ export class UserService {
   }
 
   async createTask(id: number, dto: TaskDto) {
-    return await this.prisma.teacherTask.create({
+    return this.prisma.task.create({
       data: {
-        userId: id,
+        teacherId: id,
         name: dto.name,
         hash: dto.hash,
         value: dto.value,
@@ -113,41 +140,109 @@ export class UserService {
   }
 
   async updateStudentTask(id: number, dto: UpdateStudentTaskDto) {
-    return await this.prisma.studentTask.update({
+    const user = await this.prisma.user.findUnique({
       where: {
-        hash_userId: {
-          hash: dto.hash,
-          userId: id,
+        id,
+      },
+      include: {
+        Student: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (!user.Student) {
+      throw new BadRequestException('Такого пользователя не существует');
+    }
+
+    const task = await this.prisma.task.findUnique({
+      where: {
+        hash: dto.hash,
+      },
+    });
+    const studentTask = await this.prisma.studentTask.update({
+      where: {
+        taskId_studentId: {
+          taskId: task.taskId,
+          studentId: user.Student.id,
         },
       },
       data: {
-        ...dto,
+        testCorrectNumber: dto.testCorrectNumber,
+        learnCorrectNumber: dto.learnCorrectNumber,
+        cardsComplete: dto.cardsComplete,
+        learningComplete: dto.learningComplete,
+        testComplete: dto.testComplete,
       },
     });
   }
 
-  async addStudentTask(id: number, dto: StudentTaskDto) {
-    const allUserTasks = await this.prisma.studentTask.findMany({
+  async getStudentTask(id: number, hash: string) {
+    const user = await this.prisma.user.findUnique({
       where: {
-        userId: id,
+        id,
+      },
+      include: {
+        Student: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
-    const check = allUserTasks.some((item) => {
-      return item.hash === dto.hash;
-    });
-    if (check) {
-      return allUserTasks.find((item) => {
-        return item.hash === dto.hash;
-      });
-    } else {
-      return await this.prisma.studentTask.create({
-        data: {
-          userId: id,
-          name: dto.name,
-          hash: dto.hash,
-        },
-      });
+    if (!user.Student) {
+      throw new BadRequestException('Такого пользователя не существует');
     }
+
+    const task = await this.prisma.task.findUnique({
+      where: {
+        hash,
+      },
+    });
+    const studentTask = await this.prisma.studentTask.findUnique({
+      where: {
+        taskId_studentId: {
+          taskId: task.taskId,
+          studentId: user.Student.id,
+        },
+      },
+    });
+    if (!studentTask) {
+      throw new BadRequestException('Такого задания не существует');
+    }
+    return studentTask;
+  }
+
+  async addStudentTask(id: number, dto: StudentTaskDto) {
+    const student = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        Student: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    const task = await this.prisma.task.findUnique({
+      where: {
+        hash: dto.hash,
+      },
+      select: {
+        taskId: true,
+      },
+    });
+    if (!task) throw new BadRequestException('Задание не найдено');
+
+    return this.prisma.studentTask.create({
+      data: {
+        studentId: student.Student.id,
+        taskId: task.taskId,
+      },
+    });
   }
 
   private async getUserRole(login: string) {
@@ -155,11 +250,22 @@ export class UserService {
       where: {
         login,
       },
-      select: {
-        role: true,
+      include: {
+        Teacher: true,
+        Student: true,
       },
     });
     if (!user) throw new UnauthorizedException('Польозватель не найден');
-    return user.role;
+
+    const isStudent = user.Student?.userId === user.id;
+    const isTeacher = user.Teacher?.userId === user.id;
+    if (isStudent && isTeacher) {
+      throw new ForbiddenException(
+        'Пользователь не может быть и учителем и учеником одновременно',
+      );
+    }
+    if (isStudent) return 'student';
+    if (isTeacher) return 'teacher';
+    // check in teacher or student table
   }
 }

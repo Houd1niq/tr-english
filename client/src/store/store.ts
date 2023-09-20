@@ -3,14 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import { TrEnglishApi } from "../services/trEnglishApi/TREnglishApi";
 import { translationApi } from "../services/transilationApi/translationApi";
-import currentTaskReducer from "./slices/currentTaskSlice";
+import { loadingSliceReducer } from "./slices/loadingSlice";
 
 const store = configureStore({
   reducer: {
     authReducer,
-    currentTaskReducer,
     [TrEnglishApi.reducerPath]: TrEnglishApi.reducer,
     [translationApi.reducerPath]: translationApi.reducer,
+    loadingSliceReducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(

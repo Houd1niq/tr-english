@@ -45,22 +45,23 @@ export class UserController {
     @Body()
     task: UpdateStudentTaskDto,
   ) {
+    console.log(task);
     const user = req.user as PayloadType;
     return await this.userService.updateStudentTask(user.id, task);
   }
 
-  // @Get('student-task/:hash')
-  // @UseGuards(AuthGuard('jwt'))
-  // async getStudentTask(
-  //   @Req() req: Request,
-  //   @Param('hash') taskUrlHash: string,
-  // ) {
-  //   const user = req.user as PayloadType;
-  //   return await this.userService.getStudentTask(user.id, taskUrlHash);
-  // }
+  @Get('student-task/:hash')
+  @UseGuards(AuthGuard('jwt'))
+  async getStudentTask(
+    @Req() req: Request,
+    @Param('hash') taskUrlHash: string,
+  ) {
+    const user = req.user as PayloadType;
+    return await this.userService.getStudentTask(user.id, taskUrlHash);
+  }
 
   @Get('task-info/:hash')
-  async getTaskInfo(@Param('hash') taskUrlHash) {
+  async getTaskInfo(@Param('hash') taskUrlHash: string) {
     return await this.userService.getTaskByHash(taskUrlHash);
   }
 

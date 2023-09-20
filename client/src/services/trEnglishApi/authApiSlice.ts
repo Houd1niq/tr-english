@@ -8,13 +8,16 @@ export const authApiSlice = TrEnglishApi.injectEndpoints({
         url: "auth/logout",
         method: "POST",
       }),
+      invalidatesTags: ["User"],
     }),
+
     login: build.mutation<{ accessToken: string }, LoginDto>({
       query: (body) => ({
         url: "auth/signin",
         method: "POST",
         body,
       }),
+      invalidatesTags: ["User"],
     }),
     register: build.mutation<{ accessToken: string }, RegisterDto>({
       query: (registerDto) => ({
@@ -22,6 +25,7 @@ export const authApiSlice = TrEnglishApi.injectEndpoints({
         method: "POST",
         body: registerDto,
       }),
+      invalidatesTags: ["User"],
     }),
   }),
 });

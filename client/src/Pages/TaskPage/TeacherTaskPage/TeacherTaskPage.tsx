@@ -1,11 +1,11 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { userApiSlice } from "../services/trEnglishApi/userApiSlice";
+import { userApiSlice } from "../../../services/trEnglishApi/userApiSlice";
 import { Roller } from "react-spinners-css";
-import { triggerSuccessNotification } from "../utils/notificationUtilities";
-import copyIcon from "../assets/copy-svgrepo-com.svg";
+import { triggerSuccessNotification } from "../../../utils/notificationUtilities";
+import copyIcon from "../../../assets/copy-svgrepo-com.svg";
 
-export const TaskInfoPage: React.FC = () => {
+export const TeacherTaskPage: React.FC = () => {
   const location = useLocation();
   const pathname = location.pathname.split("/");
   const hashUrl = pathname[pathname.length - 1];

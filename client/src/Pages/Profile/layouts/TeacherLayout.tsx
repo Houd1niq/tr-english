@@ -1,10 +1,9 @@
 import React from "react";
 import { CommonButton } from "../../../components/CommonButton";
 import { useNavigate } from "react-router-dom";
-import { TUser } from "../../../store/slices/authSlice";
 import { ProfileTaskList } from "../../../components/ProfileTaskList";
 
-export const TeacherLayout: React.FC<{ user: TUser }> = ({ user }) => {
+export const TeacherLayout: React.FC = () => {
   const navigate = useNavigate();
 
   return (
@@ -13,13 +12,11 @@ export const TeacherLayout: React.FC<{ user: TUser }> = ({ user }) => {
         onClick={() => {
           navigate("create-task");
         }}
-        value="Создать задание"
         type="button"
-      ></CommonButton>
-      <ProfileTaskList
-        user={user}
-        typeOfTaskList="teacherTaskList"
-      ></ProfileTaskList>
+      >
+        Создать задание
+      </CommonButton>
+      <ProfileTaskList></ProfileTaskList>
     </div>
   );
 };
