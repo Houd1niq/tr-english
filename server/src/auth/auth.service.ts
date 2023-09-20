@@ -42,26 +42,26 @@ export class AuthService {
           },
         });
       } else if (dto.role === 'student') {
-        await this.prisma.student.create({
+        const student = await this.prisma.student.create({
           data: {
             userId: newUser.id,
           },
         });
-      }
 
-      // Добавление в профиль ученика задания по умолчанию, для демонстрации функционала
-      // if (dto.role === 'student') {
-      //   await this.prisma.studentTask.create({
-      //     data: {
-      //       studentId: newUser.id,
-      //     },
-      //   });
-      // }
+        //adding demo task to every new student
+        await this.prisma.studentTask.create({
+          data: {
+            studentId: student.id,
+            taskId: 1,
+          },
+        });
+      }
 
       const tokens = await this.getTokens(newUser.id, newUser.login);
       await this.updateHashRtInDB(newUser.login, tokens.refresh_token);
       return tokens;
     } catch (e) {
+      console.log(e);
       throw new ForbiddenException(
         'Пользователь с такими логином уже существует',
       );

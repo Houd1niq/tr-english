@@ -34,8 +34,7 @@
     "start": "cross-env NODE_ENV=dev react-scripts start",
     "build": "cross-env NODE_ENV=build react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "postbuild": "mv build/ ../server/static"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

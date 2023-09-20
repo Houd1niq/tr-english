@@ -73,6 +73,7 @@ export const userApiSlice = TrEnglishApi.injectEndpoints({
         method: "POST",
         body: task,
       }),
+      invalidatesTags: ["User"],
     }),
   }),
 });
