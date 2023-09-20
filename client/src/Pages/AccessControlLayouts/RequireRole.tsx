@@ -1,13 +1,13 @@
 import React from "react";
-import { useAppSelector } from "../../store/store";
 import { Outlet, useNavigate } from "react-router-dom";
 import { CommonButton } from "../../components/CommonButton";
+import { userApiSlice } from "../../services/trEnglishApi/userApiSlice";
 
 export const RequireRole: React.FC<{ role: "teacher" | "student" }> = ({
   role,
 }) => {
   const navigate = useNavigate();
-  let user = useAppSelector((state) => state.authReducer.user);
+  const { data: user } = userApiSlice.useGetUserInfoQuery("");
 
   if (user && user.role === role) {
     return (

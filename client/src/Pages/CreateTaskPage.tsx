@@ -99,11 +99,12 @@ const CreateTaskPage: React.FC = () => {
       </div>
       <CommonButton
         type="submit"
-        value="Сохранить"
         onClick={() => {
           saveTaskHandler(arrayOfWord, taskName, nanoid(15));
         }}
-      ></CommonButton>
+      >
+        Сохранить
+      </CommonButton>
     </div>
   );
 };

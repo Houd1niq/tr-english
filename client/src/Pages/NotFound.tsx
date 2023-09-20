@@ -7,7 +7,7 @@ const NotFound: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h2 className="text-2xl">Страница не найдена</h2>
-      <CommonButton value={"Вернуться назад"} onClick={() => navigate(-1)} />
+      <CommonButton onClick={() => navigate(-1)}>Вернуться назад</CommonButton>
     </div>
   );
 };

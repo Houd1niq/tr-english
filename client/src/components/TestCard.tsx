@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AnswerButton } from "./AnswerButton";
-import { TestItem } from "../Pages/TaskPage/layouts/TestLayout";
+import { TestItem } from "../Pages/TaskPage/StudentTaskPage/layouts/TestLayout";
 
 export const TestCard: React.FC<{
   value: TestItem;
@@ -17,13 +17,15 @@ export const TestCard: React.FC<{
       </div>
       <div>
         <p>Выберите правильный термин</p>
-        <nav className="flex flex-wrap gap-3 mt-2">
+        <nav className="flex flex-wrap justify-center gap-3 mt-3">
           {value.answers.map((answerItem) => {
             return (
               <AnswerButton
+                className="w-[45%]"
                 setCorrectAnswerCounter={setCorrectAnswerCounter}
                 key={answerItem.id}
-                answerItem={answerItem}
+                userAnswer={answerItem.eng}
+                value={answerItem.eng}
                 correctAnswer={answer}
                 isDisabled={isDisabled}
                 setIsDisabled={setIsDisabled}

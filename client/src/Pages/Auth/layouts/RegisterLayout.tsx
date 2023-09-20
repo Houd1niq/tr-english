@@ -50,7 +50,7 @@ const RegisterLayout: React.FC = () => {
       return;
     }
     if (password.length < 4) {
-      triggerWarningNotification("Логин должен содержать минимум 4 символа");
+      triggerWarningNotification("Пароль должен содержать минимум 4 символа");
       return;
     }
     await register({ login, role, password, name });
@@ -88,7 +88,7 @@ const RegisterLayout: React.FC = () => {
       ></FormInput>
       <LoginRoleSelector getSelectedRole={setRole}></LoginRoleSelector>
 
-      <CommonButton value="Зарегистрироваться" type="submit"></CommonButton>
+      <CommonButton type="submit">Зарегистрироваться</CommonButton>
       <Link to="../login" className="text-main-purple text-[12px] mt-2">
         Уже зарегистрированны? <br /> Войти
       </Link>

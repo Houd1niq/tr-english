@@ -31,22 +31,32 @@ export class AuthService {
       const newUser = await this.prisma.user.create({
         data: {
           name: dto.name,
-          role: dto.role,
           login: dto.login,
           hash,
         },
       });
-
-      // Добавление в профиль ученика задания по умолчанию, для демонстрации функционала
-      if (dto.role === 'student') {
-        await this.prisma.studentTask.create({
+      if (dto.role === 'teacher') {
+        await this.prisma.teacher.create({
           data: {
             userId: newUser.id,
-            name: 'Тестовое задание',
-            hash: 'dfGtIp-pcPFo0rK',
+          },
+        });
+      } else if (dto.role === 'student') {
+        await this.prisma.student.create({
+          data: {
+            userId: newUser.id,
           },
         });
       }
+
+      // Добавление в профиль ученика задания по умолчанию, для демонстрации функционала
+      // if (dto.role === 'student') {
+      //   await this.prisma.studentTask.create({
+      //     data: {
+      //       studentId: newUser.id,
+      //     },
+      //   });
+      // }
 
       const tokens = await this.getTokens(newUser.id, newUser.login);
       await this.updateHashRtInDB(newUser.login, tokens.refresh_token);
@@ -105,6 +115,7 @@ export class AuthService {
     ]);
     return { refresh_token: rt, access_token: at };
   }
+
   private hashData(value: string): Promise<string> {
     return bcrypt.hash(value, 5);
   }

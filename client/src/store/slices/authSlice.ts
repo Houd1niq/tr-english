@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { userApiSlice } from "../../services/trEnglishApi/userApiSlice";
 
 export type TUser = {
   name: string;
@@ -9,12 +8,10 @@ export type TUser = {
 };
 
 interface AuthState {
-  user: TUser | null;
   accessToken: string | null;
 }
 
 const initialState: AuthState = {
-  user: null,
   accessToken: localStorage.getItem("accessToken"),
 };
 
@@ -29,24 +26,10 @@ const AuthSlice = createSlice({
 
     logOut(state) {
       state.accessToken = null;
-      state.user = null;
       localStorage.removeItem("accessToken");
     },
-
-    setUserInfo(state, action: PayloadAction<TUser>) {
-      state.user = action.payload;
-    },
-  },
-
-  extraReducers: (builder) => {
-    builder.addMatcher(
-      userApiSlice.endpoints.getUserInfo.matchFulfilled,
-      (state, action) => {
-        state.user = action.payload;
-      }
-    );
   },
 });
 
-export const { setAccessToken, setUserInfo, logOut } = AuthSlice.actions;
+export const { setAccessToken, logOut } = AuthSlice.actions;
 export default AuthSlice.reducer;

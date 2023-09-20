@@ -71,7 +71,9 @@ const LoginLayout: React.FC = () => {
           type="password"
           placeholder="Введите пароль"
         ></FormInput>
-        <CommonButton value="Войти" type="submit"></CommonButton>
+        <CommonButton className="min-w-[30%] mt-2" type="submit">
+          Войти
+        </CommonButton>
         <Link to="../register" className="text-main-purple text-[12px] mt-2">
           Ещё не зарегистрированы? <br /> Зарегистрироваться
         </Link>

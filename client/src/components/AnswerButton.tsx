@@ -1,30 +1,38 @@
 import React from "react";
-import { CardValue } from "../Pages/CreateTaskPage";
 import {
   triggerSuccessNotification,
   triggerWarningNotification,
 } from "../utils/notificationUtilities";
+import { ButtonTheme, CommonButton } from "./CommonButton";
 
 export const AnswerButton: React.FC<{
-  answerItem: CardValue;
-  correctAnswer: string;
+  value: string;
+  userAnswer: string | boolean;
+  correctAnswer: string | boolean;
   setCorrectAnswerCounter: React.Dispatch<React.SetStateAction<number>>;
   setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   isDisabled: boolean;
   setCompletedTaskCounter: React.Dispatch<React.SetStateAction<number>>;
+  className?: string;
 }> = ({
-  answerItem,
-  correctAnswer,
+  value,
+  userAnswer,
   setCorrectAnswerCounter,
   setIsDisabled,
   isDisabled,
   setCompletedTaskCounter,
+  correctAnswer,
+  className,
 }) => {
   return (
-    <button
+    <CommonButton
+      className={className}
       disabled={isDisabled}
       onClick={(e) => {
-        if (answerItem.eng === correctAnswer) {
+        if (
+          String(userAnswer).trim().toLowerCase() ===
+          String(correctAnswer).trim().toLowerCase()
+        ) {
           setCorrectAnswerCounter((prev) => prev + 1);
           triggerSuccessNotification("Правильно!", 2000);
           e.currentTarget.classList.add("bg-green-300");
@@ -37,9 +45,9 @@ export const AnswerButton: React.FC<{
         e.currentTarget.classList.remove("bg-bg-input");
         setCompletedTaskCounter((prev) => prev + 1);
       }}
-      className="px-3 py-2 w-full hover:bg-light-gray sm:w-[48%] outline-none bg-bg-input rounded-xl border-main-purple border "
+      theme={ButtonTheme.outline}
     >
-      {answerItem.eng}
-    </button>
+      {value}
+    </CommonButton>
   );
 };

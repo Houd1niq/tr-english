@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useAppSelector } from "../../store/store";
 import { Navigate, Outlet } from "react-router-dom";
 import Header from "../../components/Header";
@@ -6,12 +6,7 @@ import { userApiSlice } from "../../services/trEnglishApi/userApiSlice";
 
 const RequireAuthorization: React.FC = () => {
   const token = useAppSelector((state) => state.authReducer.accessToken);
-  const [getUserInfoQuery, userResponse] =
-    userApiSlice.useLazyGetUserInfoQuery();
-
-  useEffect(() => {
-    getUserInfoQuery("");
-  }, []);
+  const userResponse = userApiSlice.useGetUserInfoQuery("");
 
   if (userResponse.isSuccess && token) {
     return (
@@ -22,7 +17,7 @@ const RequireAuthorization: React.FC = () => {
         </div>
       </>
     );
-  } else if (userResponse.isError || !token) {
+  } else if (!token) {
     return <Navigate to="/auth/login"></Navigate>;
   } else {
     return <></>;

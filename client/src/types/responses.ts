@@ -4,11 +4,18 @@ export interface registerResponse {
   };
 }
 
-export interface refreshResponse {
-  data: {
+export type refreshResponse = {
+  data?: {
     accessToken: string;
   };
-}
+  error?: {
+    status: number;
+    data: {
+      statusCode: number;
+      message: string;
+    };
+  };
+};
 
 export interface ErrorType {
   data: { statusCode: number; message: string[] | string; error: string };

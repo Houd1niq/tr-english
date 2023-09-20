@@ -6,6 +6,7 @@ import {
 import { RootState } from "../../store/store";
 import { logOut, setAccessToken } from "../../store/slices/authSlice";
 import { refreshResponse } from "../../types";
+import { setIsLoading, setNotIsLoading } from "../../store/slices/loadingSlice";
 
 let baseUrl = window.location.origin;
 
@@ -25,27 +26,36 @@ const baseQuery = fetchBaseQuery({
 });
 
 const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
+  api.dispatch(setIsLoading());
   let result = await baseQuery(args, api, extraOptions);
-  if (result.error && result.error.status === "FETCH_ERROR")
+  if (result.error && result.error.status === "FETCH_ERROR") {
     api.dispatch(logOut());
+    api.dispatch(setNotIsLoading());
+  }
+
   if (result.error && result.error.status === 401) {
     const refreshResult = (await baseQuery(
       "/auth/refresh",
       api,
       extraOptions
     )) as refreshResponse;
-    if (refreshResult.data.accessToken) {
+    console.log(refreshResult);
+    if (refreshResult.data && refreshResult.data.accessToken) {
       api.dispatch(setAccessToken(refreshResult.data.accessToken));
-    } else {
+    } else if (refreshResult.error) {
       api.dispatch(logOut());
+      api.dispatch(setNotIsLoading());
     }
     result = await baseQuery(args, api, extraOptions);
   }
+
+  api.dispatch(setNotIsLoading());
   return result;
 };
 
 export const TrEnglishApi = createApi({
   reducerPath: "trEnglishApi",
   baseQuery: baseQueryWithReFetch,
+  tagTypes: ["StudentTask", "User"],
   endpoints: () => ({}),
 });
