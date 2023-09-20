@@ -58,7 +58,7 @@ const CreateTaskPage: React.FC = () => {
       hash,
     });
     triggerSuccessNotification("Задание успешно создано");
-    navigate(`../task-info/${hash}`);
+    navigate(`../task/${hash}`);
   }
 
   return (
