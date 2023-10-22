@@ -6,7 +6,7 @@ const WordsInput: React.FC<{
   getValue?(value: string): void;
   value?: string;
   name: string;
-  onChangeExtender?: Function;
+  onChangeExtender?: (value: string) => void;
 }> = ({ label, placeholder, getValue, value, name, onChangeExtender }) => {
   return (
     <div className="relative h-14">

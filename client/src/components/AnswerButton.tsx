@@ -5,35 +5,43 @@ import {
 } from "../utils/notificationUtilities";
 import { ButtonTheme, CommonButton } from "./CommonButton";
 
-export const AnswerButton: React.FC<{
-  value: string;
+type AnswerButtonProps = {
   userAnswer: string | boolean;
   correctAnswer: string | boolean;
-  setCorrectAnswerCounter: React.Dispatch<React.SetStateAction<number>>;
   setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   isDisabled: boolean;
-  setCompletedTaskCounter: React.Dispatch<React.SetStateAction<number>>;
+  setIsDone: (arg: boolean) => void;
+  setCorrectAnswer: (arg: string) => void;
   className?: string;
-}> = ({
-  value,
-  userAnswer,
-  setCorrectAnswerCounter,
-  setIsDisabled,
-  isDisabled,
-  setCompletedTaskCounter,
-  correctAnswer,
-  className,
-}) => {
+  children?: React.ReactNode;
+  onAnswer?: (isCorrect: boolean) => void;
+};
+
+export const AnswerButton: React.FC<AnswerButtonProps> = (props) => {
+  const {
+    children,
+    userAnswer,
+    setIsDisabled,
+    isDisabled,
+    correctAnswer,
+    className,
+    setCorrectAnswer,
+    setIsDone,
+    onAnswer,
+  } = props;
+
   return (
     <CommonButton
       className={className}
       disabled={isDisabled}
       onClick={(e) => {
-        if (
+        const res =
           String(userAnswer).trim().toLowerCase() ===
-          String(correctAnswer).trim().toLowerCase()
-        ) {
-          setCorrectAnswerCounter((prev) => prev + 1);
+          String(correctAnswer).trim().toLowerCase();
+        setIsDone(res);
+        setCorrectAnswer(String(correctAnswer));
+        onAnswer?.(res);
+        if (res) {
           triggerSuccessNotification("Правильно!", 2000);
           e.currentTarget.classList.add("bg-green-300");
         } else {
@@ -43,11 +51,10 @@ export const AnswerButton: React.FC<{
         setIsDisabled(true);
         e.currentTarget.classList.remove("hover:bg-light-gray");
         e.currentTarget.classList.remove("bg-bg-input");
-        setCompletedTaskCounter((prev) => prev + 1);
       }}
       theme={ButtonTheme.outline}
     >
-      {value}
+      {children}
     </CommonButton>
   );
 };

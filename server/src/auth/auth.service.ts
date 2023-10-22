@@ -55,6 +55,12 @@ export class AuthService {
             taskId: 1,
           },
         });
+
+        await this.prisma.knowledgeBase.create({
+          data: {
+            studentId: student.id,
+          },
+        });
       }
 
       const tokens = await this.getTokens(newUser.id, newUser.login);

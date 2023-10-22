@@ -29,7 +29,6 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
   api.dispatch(setIsLoading());
   let result = await baseQuery(args, api, extraOptions);
   if (result.error && result.error.status === "FETCH_ERROR") {
-    api.dispatch(logOut());
     api.dispatch(setNotIsLoading());
   }
 
@@ -39,7 +38,6 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
       api,
       extraOptions
     )) as refreshResponse;
-    console.log(refreshResult);
     if (refreshResult.data && refreshResult.data.accessToken) {
       api.dispatch(setAccessToken(refreshResult.data.accessToken));
     } else if (refreshResult.error) {
@@ -56,6 +54,6 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
 export const TrEnglishApi = createApi({
   reducerPath: "trEnglishApi",
   baseQuery: baseQueryWithReFetch,
-  tagTypes: ["StudentTask", "User"],
+  tagTypes: ["StudentTask", "User", "KnowledgeBase"],
   endpoints: () => ({}),
 });

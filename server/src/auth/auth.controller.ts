@@ -24,7 +24,8 @@ export class AuthController {
   async signIn(@Body() dto: AuthDto, @Res() res: Response) {
     const tokens = await this.authService.signIn(dto);
     res.cookie('refresh-token', tokens.refresh_token, {
-      sameSite: true,
+      sameSite: 'none',
+      secure: true,
       httpOnly: true,
     });
     return res.send({ accessToken: tokens.access_token });
@@ -36,7 +37,8 @@ export class AuthController {
     console.log(dto);
     const tokens = await this.authService.signUp(dto);
     res.cookie('refresh-token', tokens.refresh_token, {
-      sameSite: true,
+      sameSite: 'none',
+      secure: true,
       httpOnly: true,
     });
     return res.send({ accessToken: tokens.access_token });
@@ -60,7 +62,8 @@ export class AuthController {
     const id = user.id;
     const tokens = await this.authService.refresh(id, login, rt);
     res.cookie('refresh-token', tokens.refresh_token, {
-      sameSite: true,
+      sameSite: 'none',
+      secure: true,
       httpOnly: true,
     });
     return res.send({ accessToken: tokens.access_token });

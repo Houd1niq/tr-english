@@ -11,6 +11,8 @@ export const StudentTaskPage: React.FC = () => {
   const hashUrl = pathname[2];
   const [getOneTaskQuery, taskQueryResult] =
     userApiSlice.useLazyGetOneTaskQuery();
+  const { isSuccess: isStudentTaskSuccess } =
+    userApiSlice.useGetStudentTaskQuery(hashUrl);
 
   useEffect(() => {
     getOneTaskQuery(hashUrl);
@@ -23,13 +25,19 @@ export const StudentTaskPage: React.FC = () => {
     }
   }, []);
 
-  if (taskQueryResult.isSuccess && taskQueryResult.currentData) {
+  if (
+    taskQueryResult.isSuccess &&
+    isStudentTaskSuccess &&
+    taskQueryResult.currentData
+  ) {
     return (
       <>
         <h2 className="text-3xl mt-3 font-bold">
-          {taskQueryResult.currentData.name}
+          {taskQueryResult.currentData
+            ? taskQueryResult.currentData.name
+            : "Задание"}
         </h2>
-        <nav className="mt-5">
+        <nav className="mt-5 mb-5">
           <ul className="flex gap-4 flex-col sm:flex-row items-stretch">
             <TaskSelectorItem value="Карточки" link="cards"></TaskSelectorItem>
             <TaskSelectorItem

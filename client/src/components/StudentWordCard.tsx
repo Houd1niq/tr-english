@@ -54,7 +54,7 @@ export const StudentWordCard: React.FC<{
   return (
     <div
       ref={container}
-      className="card-container cursor-pointer inline-block w-full min-h-[300px] h-[60vh] lg:w-[60vw]"
+      className="card-container cursor-pointer inline-block w-full min-h-[300px] h-[60vh] lg:w-[60vw] mb-5"
       onClick={() => {
         if (rus.current && eng.current) {
           rus.current.classList.toggle("flip-rus");
@@ -69,7 +69,7 @@ export const StudentWordCard: React.FC<{
         <h4 className="text-center text-xl ">
           {idx + 1}/{quantity}
         </h4>
-        <div className="text-[62px] flex-grow flex items-center justify-center">
+        <div className="text-2xl sm:text-[62px] flex-grow flex items-center justify-center">
           {engValue}
         </div>
         <nav className="h-10">
@@ -85,7 +85,7 @@ export const StudentWordCard: React.FC<{
         <h4 className="text-center text-xl ">
           {idx + 1}/{quantity}
         </h4>
-        <div className="text-[62px] flex-grow flex items-center justify-center">
+        <div className="text-2xl sm:text-[62px] flex-grow flex items-center justify-center">
           {rusValue}
         </div>
         <nav className="h-10">

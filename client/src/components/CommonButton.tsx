@@ -5,11 +5,12 @@ type ButtonType = "button" | "submit" | "reset" | undefined;
 export enum ButtonTheme {
   purple = "purple",
   outline = "outline",
+  clear = "clear",
 }
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   type?: ButtonType;
-  onClick?: (...arg: any) => any;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => any;
   theme?: ButtonTheme;
   classNames?: string;
   children?: React.ReactNode;
@@ -24,13 +25,26 @@ export const CommonButton: React.FC<ButtonProps> = (props) => {
     className,
   } = props;
   let themeClassNames = "";
-  if (theme === ButtonTheme.outline) {
-    themeClassNames =
-      "hover:bg-light-gray outline-none bg-bg-input rounded-xl border-main-purple border ";
-  } else if (theme === ButtonTheme.purple) {
-    themeClassNames =
-      "hover:shadow-main-purple hover:shadow-roundShadow transition-shadow text-main-white bg-main-purple rounded-xl";
+  switch (theme) {
+    case ButtonTheme.purple:
+      themeClassNames =
+        "hover:shadow-main-purple outline-none hover:shadow-roundShadow transition-shadow text-main-white bg-main-purple rounded-xl";
+      break;
+    case ButtonTheme.outline:
+      themeClassNames =
+        "hover:bg-light-gray outline-none bg-bg-input rounded-xl border-main-purple border ";
+      break;
+    case ButtonTheme.clear:
+      themeClassNames = "bg-none hover:text-main-purple text-main-white";
+      break;
   }
+  // if (theme === ButtonTheme.outline) {
+  //   themeClassNames =
+  //     "hover:bg-light-gray outline-none bg-bg-input rounded-xl border-main-purple border ";
+  // } else if (theme === ButtonTheme.purple) {
+  //   themeClassNames =
+  //     "hover:shadow-main-purple outline-none hover:shadow-roundShadow transition-shadow text-main-white bg-main-purple rounded-xl";
+  // }
   return (
     <button
       {...props}

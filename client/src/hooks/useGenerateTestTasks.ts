@@ -1,18 +1,40 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CardValue } from "../Pages/CreateTaskPage";
 import { shuffle } from "../utils/utilsFunction";
 import {
   TestItem,
   TrueOrFalseItem,
 } from "../Pages/TaskPage/StudentTaskPage/layouts/TestLayout";
-import { TaskDto } from "../types";
+
+type Task =
+  | {
+      type: "trueOrFalse";
+      value: string;
+      fakeValue: string;
+      correct: boolean;
+      id: string;
+    }
+  | {
+      type: "test";
+      question: CardValue;
+      answers: CardValue[];
+    }
+  | {
+      type: "learning";
+      data: CardValue;
+    };
+
+type allTasks = {
+  tasks: Task[];
+  quantity: React.MutableRefObject<number | null>;
+};
 
 export function useGenerateTestTasks(
-  taskData: (TaskDto & { createdAt: string }) | undefined
-) {
-  const [trueOrFalse, setTrueOrFalse] = useState<TrueOrFalseItem[]>();
-  const [test, setTest] = useState<TestItem[]>();
-  const [learning, setLearning] = useState<CardValue[]>();
+  taskData:
+    | { value: { rus: string; eng: string; id: string | number }[] }
+    | undefined
+): allTasks {
+  let [allTasks, setAllTasks] = useState<Task[]>([]);
   let quantity = useRef<number | null>(null);
 
   useEffect(() => {
@@ -32,6 +54,7 @@ export function useGenerateTestTasks(
             correct: true,
             fakeValue: values[correctIndex].eng,
             value: values[correctIndex].rus,
+            id: String(values[correctIndex].id),
           });
         } else {
           // False
@@ -44,6 +67,7 @@ export function useGenerateTestTasks(
             correct: false,
             fakeValue: values[correctIndex].eng,
             value: values[fakeIndex].rus,
+            id: String(values[correctIndex].id),
           });
         }
       }
@@ -69,7 +93,10 @@ export function useGenerateTestTasks(
         }
         answers.push(questionItem);
         answers = shuffle(answers);
-        test.push({ question: questionItem, answers });
+        test.push({
+          question: { ...questionItem, id: String(questionItem.id) },
+          answers: answers.map((item) => ({ ...item, id: String(item.id) })),
+        });
       }
 
       // Learning
@@ -79,12 +106,26 @@ export function useGenerateTestTasks(
           Math.random() * copyOfValuesForLearning.length
         );
         const learningItem = copyOfValuesForLearning.splice(randomIndex, 1)[0];
-        learning.push(learningItem);
+        learning.push({ ...learningItem, id: String(learningItem.id) });
       }
     }
-    setTest(test);
-    setLearning(learning);
-    setTrueOrFalse(trueOrFalse);
+    setAllTasks(
+      shuffle<Task[]>([
+        ...learning.map((item) => ({
+          type: "learning" as const,
+          data: { ...item },
+        })),
+        ...test.map((item) => ({ type: "test" as const, ...item })),
+        ...trueOrFalse.map((item) => ({
+          type: "trueOrFalse" as const,
+          ...item,
+        })),
+      ])
+    );
   }, [taskData]);
-  return { trueOrFalse, test, learning, quantity };
+
+  return {
+    tasks: allTasks,
+    quantity,
+  };
 }

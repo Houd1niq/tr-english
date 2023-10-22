@@ -28,7 +28,7 @@ export const CardsLayout: React.FC = () => {
     !studentTaskData.cardsComplete
   ) {
     return (
-      <div className="mt-8 mb-10">
+      <div className="mb-10">
         {
           <StudentWordCard
             rusValue={taskData.value[cardIdx].rus}

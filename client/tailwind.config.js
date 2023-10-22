@@ -51,12 +51,25 @@ module.exports = {
             transform: "translateX(0px)",
           },
         },
+        cardCompletionInfoAnimation: {
+          "0%": {
+            opacity: 0,
+          },
+          "40%": {
+            opacity: 0,
+          },
+          "100%": {
+            opacity: 1,
+          },
+        },
       },
       animation: {
         headerHover: "headerHover .5s ease-in-out",
         loginLoad: "loginLoad 2s ease-in-out",
         cardNext: "cardNext .2s ease-in-out",
         cardPrev: "cardPrev .2s ease-in-out",
+        cardCompletionInfoAnimation:
+          "cardCompletionInfoAnimation .45s ease-in-out",
       },
     },
   },

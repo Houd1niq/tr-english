@@ -3,7 +3,6 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://dictionary.yandex.net/api/v1/dicservice.json",
-  // credentials: "include",
 });
 
 const API_KEY: string =
