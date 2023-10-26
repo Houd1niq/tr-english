@@ -23,6 +23,7 @@ export const knowledgeBaseApiSlice = TrEnglishApi.injectEndpoints({
         // return shuffle<KnowledgeBaseItem[]>(response);
         return response;
       },
+      providesTags: ["KnowledgeBase"],
     }),
 
     check: build.mutation<void, { id: string; isRight: "correct" | "wrong" }>({
@@ -31,7 +32,7 @@ export const knowledgeBaseApiSlice = TrEnglishApi.injectEndpoints({
         method: "PUT",
         body: { ...body, id: Number(body.id) },
       }),
-      invalidatesTags: ["KnowledgeBase"],
+      // invalidatesTags: ["KnowledgeBase"],
     }),
 
     addToKnowledgeBase: build.mutation<

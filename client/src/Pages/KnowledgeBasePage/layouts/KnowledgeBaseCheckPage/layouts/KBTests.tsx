@@ -1,5 +1,5 @@
 import { knowledgeBaseApiSlice } from "../../../../../services/trEnglishApi/knowledgeBaseApiSlice";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useGenerateTestTasks } from "../../../../../hooks/useGenerateTestTasks";
 import { LearningCard } from "../../../../../components/LearningCard";
 import { TestCard } from "../../../../../components/TestCard";
@@ -8,8 +8,16 @@ import { CommonButton } from "../../../../../components/CommonButton";
 
 export const KBTests = () => {
   const tasksQuery = knowledgeBaseApiSlice.useGetTasksQuery(15);
+  const [updateKBTrigger] =
+    knowledgeBaseApiSlice.useLazyGetKnowledgeBaseQuery();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [correctCounter, setCorrectCounter] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex === tasks.length && currentIndex > 0) {
+      updateKBTrigger();
+    }
+  }, [currentIndex]);
 
   const [triggerCheckItem] = knowledgeBaseApiSlice.useCheckMutation();
 
@@ -18,7 +26,12 @@ export const KBTests = () => {
   };
 
   const optimizedTestTasks = useMemo(() => {
-    if (tasksQuery.isSuccess && !tasksQuery.isFetching && tasksQuery.data) {
+    if (
+      tasksQuery.isSuccess &&
+      !tasksQuery.isFetching &&
+      tasksQuery.data &&
+      tasksQuery.data.length >= 4
+    ) {
       return {
         value: tasksQuery.data.map((item) => ({
           id: item.itemId,
@@ -35,6 +48,12 @@ export const KBTests = () => {
 
   return (
     <>
+      {tasksQuery.data && tasksQuery.data.length < 4 && (
+        <div>
+          Для создания проверочных заданий вы должны добавить минимум 4 слова в
+          вашу базу знаний :)
+        </div>
+      )}
       {tasks.length > 0 && currentIndex < tasks.length && (
         <div>
           {currentTask.type === "learning" && (
@@ -86,7 +105,7 @@ export const KBTests = () => {
         </div>
       )}
 
-      {tasks && currentIndex === tasks.length && (
+      {currentIndex === tasks.length && currentIndex > 0 && (
         <>
           <div>
             Вы повторили часть вашей базы знаний. Ваш результат:{" "}

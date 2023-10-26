@@ -4,10 +4,15 @@ import { AuthDto, RegisterDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { TokenTypes } from './types';
 import { JwtService } from '@nestjs/jwt';
+import { RevokedTokensService } from './revokedTokens.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+    private revokedTokensService: RevokedTokensService,
+  ) {}
 
   async signIn(dto: AuthDto): Promise<TokenTypes> {
     const candidate = await this.prisma.user.findUnique({
@@ -20,6 +25,7 @@ export class AuthService {
     }
     const compare = await bcrypt.compare(dto.password, candidate.hash);
     if (!compare) throw new ForbiddenException('Неверный логин или пароль');
+    await this.revokedTokensService.unRevoke(candidate.id);
     const tokens = await this.getTokens(candidate.id, candidate.login);
     await this.updateHashRtInDB(candidate.login, tokens.refresh_token);
     return tokens;
@@ -49,12 +55,12 @@ export class AuthService {
         });
 
         //adding demo task to every new student
-        await this.prisma.studentTask.create({
-          data: {
-            studentId: student.id,
-            taskId: 1,
-          },
-        });
+        // await this.prisma.studentTask.create({
+        //   data: {
+        //     studentId: student.id,
+        //     taskId: 1,
+        //   },
+        // });
 
         await this.prisma.knowledgeBase.create({
           data: {
@@ -74,14 +80,14 @@ export class AuthService {
     }
   }
 
-  async logout(login: string) {
+  async logout(login: string, userId: number) {
+    await this.revokedTokensService.revoke(userId);
     await this.prisma.user.update({
       where: { login },
       data: {
         hashedRt: null,
       },
     });
-    return { login, message: 'logged out' };
   }
 
   async refresh(id: number, login: string, rt: string) {

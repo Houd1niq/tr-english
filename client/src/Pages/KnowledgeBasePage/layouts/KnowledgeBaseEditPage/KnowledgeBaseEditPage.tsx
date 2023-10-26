@@ -21,7 +21,7 @@ export const KnowledgeBaseEditPage: React.FC = () => {
   }, [deleteResponse.isSuccess]);
 
   return (
-    <div>
+    <div className="pb-5">
       <KnowledgeBaseAddLayout />
       <h2 className="text-2xl mt-5 mb-5">Список слов</h2>
       {knowledgeBaseIsSuccess && knowledgeBase && (

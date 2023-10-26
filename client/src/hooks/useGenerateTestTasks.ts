@@ -36,6 +36,7 @@ export function useGenerateTestTasks(
 ): allTasks {
   let [allTasks, setAllTasks] = useState<Task[]>([]);
   let quantity = useRef<number | null>(null);
+  console.log("hook");
 
   useEffect(() => {
     const trueOrFalse: TrueOrFalseItem[] = [];

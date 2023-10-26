@@ -44,7 +44,7 @@ export const KnowledgeBaseAddLayout: React.FC = () => {
   }, [translationResponse.data]);
 
   return (
-    <div>
+    <div className="">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl text-center">Добавить слово</h1>
       </div>

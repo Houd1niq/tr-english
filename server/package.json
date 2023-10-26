@@ -9,6 +9,7 @@
     "migrate": "npx prisma migrate dev --create-only",
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "build:vercel": "npx prisma generate && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
