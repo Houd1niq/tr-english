@@ -11,31 +11,22 @@
 @font-face {
   font-family: Comfortaa;
   font-weight: 400;
-  src: url(assets/fonts/Comfortaa-Regular.ttf);
-}
-@font-face {
-  font-family: Comfortaa;
-  font-weight: 500;
-  src: url(assets/fonts/Comfortaa-Medium.ttf);
-}
-@font-face {
-  font-family: Comfortaa;
-  font-weight: 300;
-  src: url(assets/fonts/Comfortaa-Light.ttf);
-}
-@font-face {
-  font-family: Comfortaa;
-  font-weight: 600;
-  src: url(assets/fonts/Comfortaa-SemiBold.ttf);
+  src: url(assets/fonts/Comfortaa-Regular.woff2) format('woff2'),
+    url(assets/fonts/Comfortaa-Regular.woff) format('woff'),
+    url(assets/fonts/Comfortaa-Regular.ttf) format('ttf');
+  font-display: block;
 }
 @font-face {
   font-family: Comfortaa;
   font-weight: 700;
-  src: url(assets/fonts/Comfortaa-Bold.ttf);
+  src: url(assets/fonts/Comfortaa-Bold.woff2) format('woff2'),
+    url(assets/fonts/Comfortaa-Bold.woff) format('woff'),
+    url(assets/fonts/Comfortaa-Bold.ttf) format('ttf');
+  font-display: block;
 }
 
 body {
-  font-family: "Comfortaa", Nunito, "sans-serif";
+  font-family: "Comfortaa", "Nunito", serif;
 }
 
 .card-container {
@@ -53,8 +44,11 @@ body {
   transform: rotateX(0deg);
 }
 
+.anim-delay-300 {
+  animation-delay: 300ms;
+}
+
 .card-rus {
-  //position: absolute;
   top: 0;
   left: 0;
   backface-visibility: hidden;
@@ -71,13 +65,6 @@ body {
   transition: 0.5s;
 }
 
-//input,
-//textarea,
-//button,
-//select,
-//a {
-//  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-//}
 
 .white-img {
   filter: invert(99%) sepia(0%) saturate(0%) hue-rotate(117deg) brightness(111%)

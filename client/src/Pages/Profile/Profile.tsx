@@ -14,9 +14,7 @@ export const Profile: React.FC = () => {
       <div>
         <div className="">
           <div className="">
-            <h1 className="text-4xl text-center text-main-purple mt-2">
-              Профиль
-            </h1>
+            <h1 className="text-4xl text-center text-main-purple">Профиль</h1>
             <h2 className="text-2xl text-center text-main-white mt-2">
               {greeting}, {userData.name}
             </h2>

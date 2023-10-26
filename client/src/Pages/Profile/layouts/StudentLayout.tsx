@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ProfileTaskList } from "../../../components/ProfileTaskList";
 import { userApiSlice } from "../../../services/trEnglishApi/userApiSlice";
 import { triggerWarningNotification } from "../../../utils/notificationUtilities";
+import { BigLink } from "../../../components/BigLink";
 
 export const StudentLayout: React.FC = () => {
   const [codeValue, setCodeValue] = useState<string>("");
@@ -41,6 +42,11 @@ export const StudentLayout: React.FC = () => {
         />
         <CommonButton type={"submit"}>Найти задание</CommonButton>
       </form>
+
+      <BigLink className="mt-5 w-full" to={"../knowledge-base"}>
+        База знаний
+      </BigLink>
+
       <ProfileTaskList></ProfileTaskList>
     </div>
   );

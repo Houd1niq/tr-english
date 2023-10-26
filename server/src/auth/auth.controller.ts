@@ -14,6 +14,7 @@ import { AuthDto, RegisterDto } from './dto';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { PayloadType } from './strategies';
+import * as process from 'process';
 
 @Controller('auth')
 export class AuthController {
@@ -24,7 +25,8 @@ export class AuthController {
   async signIn(@Body() dto: AuthDto, @Res() res: Response) {
     const tokens = await this.authService.signIn(dto);
     res.cookie('refresh-token', tokens.refresh_token, {
-      sameSite: true,
+      sameSite: 'none',
+      secure: true,
       httpOnly: true,
     });
     return res.send({ accessToken: tokens.access_token });
@@ -36,7 +38,8 @@ export class AuthController {
     console.log(dto);
     const tokens = await this.authService.signUp(dto);
     res.cookie('refresh-token', tokens.refresh_token, {
-      sameSite: true,
+      sameSite: 'none',
+      secure: true,
       httpOnly: true,
     });
     return res.send({ accessToken: tokens.access_token });
@@ -45,9 +48,23 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
   @Post('logout')
-  async logout(@Req() req: Request) {
+  async logout(@Req() req: Request, @Res() res: Response) {
     const user = req.user as PayloadType;
-    return await this.authService.logout(user.login);
+    res.clearCookie('refresh-token');
+    await this.authService.logout(user.login, user.id);
+    res.status(200);
+    return res.send();
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('reset-at')
+  async resetAt(@Req() req: Request, @Res() res: Response) {
+    if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+      res.status(401);
+      return res.send();
+    }
+    res.status(200);
+    return res.send();
   }
 
   @UseGuards(AuthGuard('jwt-refresh'))
@@ -60,7 +77,8 @@ export class AuthController {
     const id = user.id;
     const tokens = await this.authService.refresh(id, login, rt);
     res.cookie('refresh-token', tokens.refresh_token, {
-      sameSite: true,
+      sameSite: 'none',
+      secure: true,
       httpOnly: true,
     });
     return res.send({ accessToken: tokens.access_token });

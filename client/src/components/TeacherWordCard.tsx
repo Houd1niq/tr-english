@@ -32,10 +32,7 @@ export const TeacherWordCard: React.FC<{
   }, [eng, rus]);
 
   useEffect(() => {
-    if (
-      translationResponse.status === "fulfilled" &&
-      translationResponse.currentData
-    ) {
+    if (translationResponse.isSuccess && translationResponse.currentData) {
       let allTranslations: string[] = [];
       translationResponse.currentData.def.forEach((item) => {
         const [tr] = item.tr;
@@ -100,7 +97,7 @@ export const TeacherWordCard: React.FC<{
             return [...prevState];
           });
         }}
-        className="text-main-white ml-4 text-red-400 mt-3 sm:mt-0"
+        className="ml-4 text-red-400 mt-3 sm:mt-0"
       >
         X
       </button>

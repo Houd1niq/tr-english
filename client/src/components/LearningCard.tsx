@@ -1,38 +1,42 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { ButtonTheme, CommonButton } from "./CommonButton";
 import {
   triggerSuccessNotification,
   triggerWarningNotification,
 } from "../utils/notificationUtilities";
+import { CheckCard, CheckCardContext } from "./CheckCard";
 
-export const LearningCard: React.FC<{
-  progressCounter?: {
+type LearningCardProps = {
+  progressCounter: {
     currentIndex: number;
     total: number;
   };
   engWord: string;
   rusWord: string;
-  answerInputElement?: React.RefObject<HTMLInputElement>;
-  checkAnswer: (eng: string, answer: string) => boolean | undefined;
-}> = (props) => {
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
+  setCorrectCounter: React.Dispatch<React.SetStateAction<number>>;
+  onAnswer?: (isCorrect: boolean) => void;
+};
+
+const LearningCardContent: React.FC<LearningCardProps> = (props) => {
   const localAnswerInput = useRef<HTMLInputElement>(null);
   const [answer, setAnswer] = useState("");
-  const { rusWord, engWord, checkAnswer, progressCounter, answerInputElement } =
-    props;
+  const { rusWord, engWord, progressCounter, onAnswer } = props;
+
+  const { setIsDone, setCorrectAnswer } = useContext(CheckCardContext);
+
   return (
-    <div className="mt-4 w-100% lg:w-[70vw] min-h-[300px] h-[70vh]">
+    <div className="w-100% min-h-[300px] h-[70vh]">
       <div className="card w-full rounded-xl bg-cart-bg-dark p-4 h-full flex flex-col justify-between">
-        {progressCounter && (
-          <h3 className="text-xl">
-            {progressCounter.currentIndex + 1}/{progressCounter.total}
-          </h3>
-        )}
-        <p className="text-4xl text-center">{rusWord}</p>
+        <h3 className="text-xl">
+          {progressCounter.currentIndex + 1}/{progressCounter.total}
+        </h3>
+        <p className="text-xl sm:text-4xl text-center">{rusWord}</p>
 
         <form onSubmit={(e) => e.preventDefault()} className="flex flex-col">
           <label htmlFor="answer">Введите ваш ответ</label>
           <input
-            ref={answerInputElement ? answerInputElement : localAnswerInput}
+            ref={localAnswerInput}
             className="bg-bg-input p-1 mt-1 outline-none focus:outline-main-purple rounded"
             placeholder="Введите ответ (язык: Английский)"
             type="text"
@@ -42,21 +46,27 @@ export const LearningCard: React.FC<{
             onChange={(e) => setAnswer(e.target.value)}
           />
           <CommonButton
-            onClick={() => {
-              const res = checkAnswer(engWord, answer);
+            onClick={(e) => {
+              e.currentTarget.disabled = true;
+              const res =
+                answer.trim().toLowerCase() === engWord.trim().toLowerCase();
+              onAnswer?.(res);
+              setIsDone(res);
+              setCorrectAnswer(engWord);
+
               if (localAnswerInput.current) {
                 if (res) {
                   localAnswerInput.current.style.outlineColor = "#86efac";
                   localAnswerInput.current.style.backgroundColor = "#b8f1cc";
                   triggerSuccessNotification("Верно", 1000);
-                } else if (res === false) {
+                } else if (!res) {
                   localAnswerInput.current.style.outlineColor = "#ef4242";
                   localAnswerInput.current.style.backgroundColor = "#ee7878";
                   triggerWarningNotification("Неверно", 1000);
                 }
                 localAnswerInput.current.disabled = true;
               } else {
-                setAnswer("");
+                // setAnswer("");
               }
             }}
             theme={ButtonTheme.outline}
@@ -68,5 +78,18 @@ export const LearningCard: React.FC<{
         </form>
       </div>
     </div>
+  );
+};
+
+export const LearningCard: React.FC<LearningCardProps> = (props) => {
+  const { setCurrentIndex, setCorrectCounter } = props;
+
+  return (
+    <CheckCard
+      setCorrectCounter={setCorrectCounter}
+      setCurrentIndex={setCurrentIndex}
+    >
+      <LearningCardContent {...props}></LearningCardContent>
+    </CheckCard>
   );
 };

@@ -1,4 +1,4 @@
-export function shuffle(array: any[]): any[] {
+export function shuffle<T extends Array<any>>(array: T): T {
   let currentIndex: number = array.length;
   let randomIndex: number;
 

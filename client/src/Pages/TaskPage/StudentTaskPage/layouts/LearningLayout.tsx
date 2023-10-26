@@ -1,10 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CommonButton } from "../../../../components/CommonButton";
 import { userApiSlice } from "../../../../services/trEnglishApi/userApiSlice";
-import {
-  triggerSuccessNotification,
-  triggerWarningNotification,
-} from "../../../../utils/notificationUtilities";
+
 import { useLocation } from "react-router-dom";
 import { LearningCard } from "../../../../components/LearningCard";
 
@@ -20,39 +17,6 @@ export const LearningLayout: React.FC = () => {
 
   const [counter, setCounterValue] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const answerInput = useRef<HTMLInputElement>(null);
-  const timer = useRef<boolean>();
-
-  function checkAnswer(eng: string, answer: string) {
-    if (timer.current) return;
-    timer.current = true;
-
-    const defaultColor = answerInput.current!.style.backgroundColor;
-    const compare =
-      answer.trim().toLocaleLowerCase() === eng.toLowerCase().trim();
-    answerInput.current!.disabled = true;
-
-    if (compare) {
-      setCounterValue((prev) => prev + 1);
-      answerInput.current!.style.outlineColor = "#86efac";
-      answerInput.current!.style.backgroundColor = "#b8f1cc";
-      triggerSuccessNotification("Верно", 1000);
-    } else {
-      triggerWarningNotification("Неверно", 1000);
-      answerInput.current!.style.outlineColor = "#ef4242";
-      answerInput.current!.style.backgroundColor = "#ee7878";
-    }
-
-    setTimeout(() => {
-      setCurrentIndex((prevState) => prevState + 1);
-      answerInput.current!.style.outlineColor = "";
-      answerInput.current!.style.backgroundColor = defaultColor;
-      answerInput.current!.disabled = false;
-      answerInput.current!.focus();
-      timer.current = false;
-    }, 1500);
-    return compare;
-  }
 
   useEffect(() => {
     if (studentTaskData) {
@@ -78,10 +42,11 @@ export const LearningLayout: React.FC = () => {
   ) {
     return (
       <LearningCard
+        key={currentIndex}
         engWord={taskData.value[currentIndex].eng}
         rusWord={taskData.value[currentIndex].rus}
-        checkAnswer={checkAnswer}
-        answerInputElement={answerInput}
+        setCurrentIndex={setCurrentIndex}
+        setCorrectCounter={setCounterValue}
         progressCounter={{
           currentIndex,
           total: taskData.value.length,
